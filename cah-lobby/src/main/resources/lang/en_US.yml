@@ -1,0 +1,201 @@
+# English (United States) Language File
+language:
+  name: "en_US"
+  display: "§aEnglish (US)"
+  flag: "🇺🇸"
+
+# General messages
+general:
+  prefix: "§6[Lobby] §r"
+  no-permission: "§cYou don't have permission to execute this command!"
+  player-not-found: "§cPlayer not found!"
+  invalid-arguments: "§cInvalid arguments!"
+  language-changed: "§aLanguage changed to §f{language}§a!"
+
+# Gamemode command
+gamemode:
+  changed-self: "§aYour gamemode has been changed to §f{mode}"
+  changed-other: "§aGamemode of §f{player}§a changed to §f{mode}"
+  invalid-mode: "§cInvalid gamemode! Use: survival, creative, adventure or spectator"
+  console-specify: "§cYou must specify a player!"
+
+# Fly command
+fly:
+  enabled-self: "§aFly mode enabled!"
+  disabled-self: "§cFly mode disabled!"
+  enabled-other: "§aFly mode enabled for §f{player}"
+  disabled-other: "§cFly mode disabled for §f{player}"
+  console-specify: "§cYou must specify a player!"
+
+# Broadcast command
+broadcast:
+  sent: "§aMessage sent to all players!"
+  format: "§6§l[ALERT] §r{message}"
+  usage: "§cUsage: /broadcast <message>"
+
+# PlayerInfo command
+playerinfo:
+  header: "§6§m------------------------------"
+  title: "§6Information about §f{player}"
+  nick: "§eNick: §f{nick}"
+  uuid: "§eUUID: §f{uuid}"
+  ip: "§eIP: §f{ip}"
+  first-login: "§eFirst login: §f{date}"
+  gamemode: "§eGamemode: §f{gamemode}"
+  status-online: "§eStatus: §aOnline"
+  status-offline: "§eStatus: §cOffline"
+  health: "§eHealth: §f{health}/20"
+  food: "§eFood: §f{food}/20"
+  level: "§eLevel: §f{level}"
+  world: "§eWorld: §f{world}"
+  footer: "§6§m------------------------------"
+  console-specify: "§cYou must specify a player!"
+
+# Speed command
+speed:
+  changed: "§aSpeed changed to §f{speed}"
+  reset: "§aSpeed reset to normal!"
+  invalid: "§cInvalid speed! Use a number between 0 and 10 or 'normal'"
+  range: "§cSpeed must be between 0 and 10!"
+
+# TP command
+tp:
+  teleported-player: "§aYou were teleported to §f{player}"
+  teleported-coords: "§aYou were teleported to §fx: {x} y: {y} z: {z}§a in world §f{world}"
+  self-teleport: "§cYou cannot teleport to yourself!"
+  world-not-found: "§cWorld not found!"
+  invalid-coords: "§cInvalid coordinates!"
+  usage: "§cUsage: /tp <player> | /tp <x> <y> <z> | /tp <x> <y> <z> <world>"
+
+# TPHere command
+tphere:
+  teleported-to-you: "§aYou were teleported to §f{player}"
+  teleported-player: "§aYou teleported §f{player}§a to you"
+  self-teleport: "§cYou cannot teleport yourself!"
+
+# TPAll command
+tpall:
+  teleported-to-you: "§aYou were teleported to §f{player}"
+  teleported-players: "§aYou teleported §f{count}§a player(s) to you"
+
+# Online command
+online:
+  message: "§6Players online: §f{count}"
+
+# Lista command
+lista:
+  message: "§6Players online §7({count}§7): §a{players}"
+
+# Ping command
+ping:
+  self: "§eYour ping: §f{ping}ms"
+  other: "§ePing of §f{player}§e: §f{ping}ms"
+  error: "§cError getting ping!"
+
+# Inv command
+inv:
+  opened: "§aYou opened §f{player}§a's inventory"
+
+# Sudo command
+sudo:
+  executed: "§aCommand §f/{command}§a executed by §f{player}"
+  usage: "§cUsage: /sudo <player> <command>"
+
+# Lang command
+lang:
+  header: "§6§m------------------------------"
+  title: "§6Available languages:"
+  available: "§e/lang {code} §7- {name}"
+  footer: "§6§m------------------------------"
+  changed: "§aLanguage changed to §f{language}§a!"
+  invalid: "§cInvalid language! Use /lang to see available languages"
+  current: "§eYour current language: §f{language}"
+
+# Lobby/Spawn command
+lobby:
+  teleported: "§aYou were teleported to spawn!"
+  no-spawn-set: "§cSpawn has not been set yet!"
+  spawn-set: "§aSpawn set at §fx: {x} y: {y} z: {z}§a in world §f{world}"
+  spawn-deleted: "§aSpawn removed successfully!"
+  reloaded: "§aConfiguration reloaded successfully!"
+
+scoreboard:
+  title: "&6&lCRAFTANDHELPS"
+  lines:
+    - "&7{online} players"
+    - ""
+    - "&fLobby: &b#1"
+    - ""
+    - "&fRankUP: &a0"
+    - "&fBedwars: &a0"
+    - ""
+    - "&fwww.craftandhelps.com"
+
+join-items:
+  gamemodes:
+    name: "&aGame Modes"
+    lore:
+      - ""
+      - "&7Click to choose"
+      - "&7a game mode!"
+      - ""
+  profile:
+    name: "&a{player}'s Profile"
+    lore:
+      - ""
+      - "&7View your statistics"
+      - "&7and achievements!"
+      - ""
+  cosmetics:
+    name: "&aCosmetics"
+    lore:
+      - ""
+      - "&7Customize your"
+      - "&7appearance on the server!"
+      - ""
+  visibility:
+    name-on: "&aPlayers Visible"
+    lore-on:
+      - ""
+      - "&7Click to hide"
+      - "&7the players!"
+      - ""
+      - "&aStatus: &fVisible"
+      - ""
+    name-off: "&cPlayers Hidden"
+    lore-off:
+      - ""
+      - "&7Click to show"
+      - "&7the players!"
+      - ""
+      - "&cStatus: &fHidden"
+      - ""
+    toggled-on: "&aPlayers are now visible!"
+    toggled-off: "&cPlayers are now hidden!"
+  lobbies:
+    name: "&aLobbies"
+    lore:
+      - ""
+      - "&7Connect to another"
+      - "&7server lobby!"
+      - ""
+
+hologram:
+  help:
+    header: "&6&m------------------------------"
+    footer: "&6&m------------------------------"
+  created: "&aHologram &f{name}&a created successfully!"
+  deleted: "&aHologram &f{name}&a removed successfully!"
+  already-exists: "&cHologram &f{name}&c already exists!"
+  not-found: "&cHologram &f{name}&c not found!"
+  no-text: "&cYou need to specify a text!"
+  invalid-line: "&cInvalid line number!"
+  line-added: "&aLine added to hologram &f{name}&a!"
+  line-set: "&aLine &f{line}&a of hologram &f{name}&a set!"
+  line-inserted: "&aLine inserted at position &f{line}&a in hologram &f{name}&a!"
+  line-removed: "&aLine &f{line}&a of hologram &f{name}&a removed!"
+  list-empty: "&cNo holograms created!"
+  list-header: "&6Created holograms:"
+  list-footer: "&7Total: &f{count}&7 hologram(s)"
+  teleported: "&aYou were teleported to hologram &f{name}&a!"
+  moved: "&aHologram &f{name}&a moved to your location!"

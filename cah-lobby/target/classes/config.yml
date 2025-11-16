@@ -1,0 +1,213 @@
+# ==========================================
+#     Configuração do Lobby Plugin
+# ==========================================
+
+# Idioma padrão do servidor
+# Idiomas disponíveis: pt_PT, en_US, es_ES
+default-language: "pt_PT"
+
+# ==========================================
+#     Sistema de Tab
+# ==========================================
+tab:
+  enabled: true
+  update-interval: 20
+  sort-by-group: true  # Ativar/desativar ordenação
+
+# ==========================================
+#     Sistema de Scoreboard
+# ==========================================
+scoreboard:
+  # Ativar ou desativar scoreboard
+  enabled: true
+
+  # Intervalo de atualização em ticks (20 ticks = 1 segundo)
+  # Recomendado: 20 (1 segundo) ou 10 (0.5 segundos)
+  update-interval: 20
+
+# ==========================================
+#     Itens de Entrada
+# ==========================================
+join-items:
+  # Ativar ou desativar itens de entrada
+  enabled: true
+
+  # Limpar inventário ao entrar
+  clear-inventory: true
+
+# ==========================================
+#     Sistema de Boas-Vindas
+# ==========================================
+welcome:
+  # Ativar ou desativar sistema de boas-vindas
+  enabled: true
+  # Mensagens no chat
+  message:
+    enabled: true
+  # Título
+  title:
+    enabled: true
+  # Action Bar
+  actionbar:
+    enabled: true
+  # Som
+  sound:
+    enabled: true
+    sound: "LEVEL_UP"  # Sons: LEVEL_UP, ORB_PICKUP, FIREWORK_BLAST, etc
+
+
+# ==========================================
+#     Configurações de Proteção
+# ==========================================
+protection:
+
+  # Desativar fome dos jogadores
+  # true = Jogadores não perdem fome
+  # false = Sistema de fome normal
+  disable-hunger: true
+
+  # Desativar dano aos jogadores
+  # true = Jogadores não recebem dano (PvP, PvE, queda, fogo, etc)
+  # false = Sistema de dano normal
+  disable-damage: true
+
+  # Desativar mudança de clima
+  # true = Clima sempre limpo
+  # false = Clima natural
+  disable-weather-change: true
+
+  # Desativar ciclo do dia
+  # true = Hora do dia fixa
+  # false = Ciclo dia/noite normal
+  disable-day-cycle: true
+
+  # Hora fixa do dia (0-24000)
+  # 0 = Amanhecer
+  # 6000 = Meio-dia (padrão)
+  # 12000 = Pôr do sol
+  # 18000 = Meia-noite
+  fixed-time: 6000
+
+  # Desativar spawn natural de mobs
+  # true = Mobs não spawnam naturalmente
+  # false = Spawn normal de mobs
+  disable-mob-spawn: true
+
+  # Desativar propagação de fogo
+  # true = Fogo não se espalha
+  # false = Fogo se espalha normalmente
+  disable-fire-spread: true
+
+  # Desativar dano de explosões
+  # true = Explosões não destroem blocos
+  # false = Explosões normais
+  disable-explosion-damage: true
+
+  # Desativar mob griefing
+  # true = Mobs não podem destruir blocos (creepers, enderman, etc)
+  # false = Mobs podem destruir blocos
+  disable-mob-griefing: true
+
+  # Manter inventário ao morrer
+  # true = Jogadores mantém itens ao morrer
+  # false = Jogadores perdem itens ao morrer
+  keep-inventory: true
+
+  # Desativar regeneração natural de vida
+  # true = Jogadores não regeneram vida naturalmente
+  # false = Regeneração normal
+  disable-natural-regeneration: false
+
+  # Anunciar conquistas no chat
+  # true = Conquistas são anunciadas
+  # false = Conquistas não são anunciadas
+  announce-advancements: false
+
+  # Modo de jogo padrão ao entrar
+  default-gamemode:
+    # Ativar ou desativar
+    enabled: true
+    # Modos disponíveis: SURVIVAL, CREATIVE, ADVENTURE, SPECTATOR
+    mode: "ADVENTURE"
+
+# ==========================================
+#     Configurações de Mundos
+# ==========================================
+worlds:
+  # Mundos onde as proteções serão aplicadas
+  # Lista vazia = aplicar em todos os mundos
+  enabled-worlds:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+
+  # Mundos onde as proteções NÃO serão aplicadas
+  disabled-worlds: []
+
+# ==========================================
+#     Configurações de Comandos
+# ==========================================
+commands:
+  # Bloquear comandos específicos
+  blocked-commands:
+    enabled: false
+    list:
+      - "stop"
+      - "reload"
+      - "restart"
+
+  # Mensagem ao tentar usar comando bloqueado
+  blocked-message: "§cVocê não pode usar este comando!"
+
+# ==========================================
+#     Configurações de Chat
+# ==========================================
+chat:
+  disabled: false  # Desativar chat
+  format: "{prefix}{player}§f: {message}"
+  anti-swear:
+    enabled: true
+    words:
+      - "miguel"
+    replacement: "*******"
+
+  # Bloquear palavrões
+  anti-swear:
+    enabled: false
+    words:
+      - "palavra1"
+      - "palavra2"
+    replacement: "***"
+
+# ==========================================
+#     Configurações de Spawn
+# ==========================================
+spawn:
+  # Teleportar jogadores para o spawn ao entrar
+  teleport-on-join: true
+
+  # Teleportar jogadores para o spawn ao respawnar
+  teleport-on-respawn: true
+
+  # Delay em ticks antes de teleportar ao entrar (20 ticks = 1 segundo)
+  teleport-delay: 1
+
+# ==========================================
+#     Outras Configurações
+# ==========================================
+
+# Mensagem ao entrar no servidor
+join-message:
+  enabled: true
+  message: "§a{player} entrou no servidor!"
+
+# Mensagem ao sair do servidor
+quit-message:
+  enabled: true
+  message: "§c{player} saiu do servidor!"
+
+# Limpar chat ao entrar
+clear-chat-on-join: false
+
+# Auto respawn ao morrer
+auto-respawn: true
