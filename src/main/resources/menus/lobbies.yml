@@ -1,0 +1,36 @@
+menu:
+  # Menu em Português
+  pt_PT:
+    title: "&8Lobbies"
+    size: 27  # 9, 18, 27, 36, 45 ou 54
+    update-interval: 20  # Ticks (20 = 1 segundo, 0 = sem atualização)
+
+    items:
+      1:
+        slot: 13
+        material: "NETHER_STAR"  # Pode ser: ID, NOME, ou URL de textura
+        name: "&aLobby #1"
+        lore:
+          - "&7Conecta ao Lobby #1"
+          - ""
+          - "&cJá te encontras neste lobby!"
+        actions:
+          - "[MESSAGE] &cJá estás conectado ao &fLobby #1&c."
+
+  # Menu em Inglês
+  en_US:
+    title: "&6&lGAME MODES"
+    size: 27
+    update-interval: 20
+
+    items:
+      1:
+        slot: 13
+        material: "NETHER_STAR"  # Pode ser: ID, NOME, ou URL de textura
+        name: "&aLobby #1"
+        lore:
+          - "&7Connect to Lobby #1"
+          - ""
+          - "&cAlready connected!"
+        actions:
+          - "[MESSAGE] &cYou are already connected to &fLobby #1&c."

@@ -1,0 +1,287 @@
+# Arquivo de idioma Português (Portugal)
+language:
+  name: "pt_PT"
+  display: "§aPortuguês (PT)"
+  flag: "🇵🇹"
+
+# Mensagens gerais
+general:
+  prefix: "§6[Lobby] §r"
+  no-permission: "§cVocê não tem permissão para executar este comando!"
+  player-not-found: "§cJogador não encontrado!"
+  invalid-arguments: "§cArgumentos inválidos!"
+  language-changed: "§aIdioma alterado para §f{language}§a!"
+
+# Comando Gamemode
+gamemode:
+  changed-self: "§aSeu modo de jogo foi alterado para §f{mode}"
+  changed-other: "§aModo de jogo de §f{player}§a alterado para §f{mode}"
+  invalid-mode: "§cModo de jogo inválido! Use: survival, creative, adventure ou spectator"
+  console-specify: "§cVocê deve especificar um jogador!"
+
+# Comando Fly
+fly:
+  enabled-self: "§aModo de voo ativado!"
+  disabled-self: "§cModo de voo desativado!"
+  enabled-other: "§aModo de voo ativado para §f{player}"
+  disabled-other: "§cModo de voo desativado para §f{player}"
+  console-specify: "§cVocê deve especificar um jogador!"
+
+# Comando Broadcast
+broadcast:
+  sent: "§aMensagem enviada para todos os jogadores!"
+  format: "§6§l[ALERTA] §r{message}"
+  usage: "§cUso: /broadcast <mensagem>"
+
+# Comando PlayerInfo
+playerinfo:
+  header: "§6§m------------------------------"
+  title: "§6Informações de §f{player}"
+  nick: "§eNick: §f{nick}"
+  uuid: "§eUUID: §f{uuid}"
+  ip: "§eIP: §f{ip}"
+  first-login: "§ePrimeiro login: §f{date}"
+  gamemode: "§eGamemode: §f{gamemode}"
+  status-online: "§eStatus: §aOnline"
+  status-offline: "§eStatus: §cOffline"
+  health: "§eVida: §f{health}/20"
+  food: "§eFome: §f{food}/20"
+  level: "§eNível: §f{level}"
+  world: "§eMundo: §f{world}"
+  footer: "§6§m------------------------------"
+  console-specify: "§cVocê deve especificar um jogador!"
+
+# Comando Speed
+speed:
+  changed: "§aVelocidade alterada para §f{speed}"
+  reset: "§aVelocidade resetada para o normal!"
+  invalid: "§cVelocidade inválida! Use um número entre 0 e 10 ou 'normal'"
+  range: "§cA velocidade deve estar entre 0 e 10!"
+
+# Comando TP
+tp:
+  teleported-player: "§aVocê foi teleportado para §f{player}"
+  teleported-coords: "§aVocê foi teleportado para §fx: {x} y: {y} z: {z}§a no mundo §f{world}"
+  self-teleport: "§cVocê não pode se teleportar para si mesmo!"
+  world-not-found: "§cMundo não encontrado!"
+  invalid-coords: "§cCoordenadas inválidas!"
+  usage: "§cUso: /tp <jogador> | /tp <x> <y> <z> | /tp <x> <y> <z> <mundo>"
+
+# Comando TPHere
+tphere:
+  teleported-to-you: "§aVocê foi teleportado para §f{player}"
+  teleported-player: "§aVocê teleportou §f{player}§a para você"
+  self-teleport: "§cVocê não pode teleportar você mesmo!"
+
+# Comando TPAll
+tpall:
+  teleported-to-you: "§aVocê foi teleportado para §f{player}"
+  teleported-players: "§aVocê teleportou §f{count}§a jogador(es) para você"
+
+# Comando Online
+online:
+  message: "§6Jogadores online: §f{count}"
+
+# Comando Lista
+lista:
+  message: "§6Jogadores online §7({count}§7): §a{players}"
+
+# Comando Ping
+ping:
+  self: "§eSeu ping: §f{ping}ms"
+  other: "§ePing de §f{player}§e: §f{ping}ms"
+  error: "§cErro ao obter ping!"
+
+# Comando Inv
+inv:
+  opened: "§aVocê abriu o inventário de §f{player}"
+
+# Comando Sudo
+sudo:
+  executed: "§aComando §f/{command}§a executado por §f{player}"
+  usage: "§cUso: /sudo <jogador> <comando>"
+
+# Comando Lang
+lang:
+  header: "§6§m------------------------------"
+  title: "§6Idiomas disponíveis:"
+  available: "§e/lang {code} §7- {name}"
+  footer: "§6§m------------------------------"
+  changed: "§aIdioma alterado para §f{language}§a!"
+  invalid: "§cIdioma inválido! Use /lang para ver os idiomas disponíveis"
+  current: "§eSeu idioma atual: §f{language}"
+
+# Comando Lobby/Spawn
+lobby:
+  teleported: "§aVocê foi teleportado para o spawn!"
+  no-spawn-set: "§cO spawn ainda não foi definido!"
+  spawn-set: "§aSpawn definido em §fx: {x} y: {y} z: {z}§a no mundo §f{world}"
+  spawn-deleted: "§aSpawn removido com sucesso!"
+  reloaded: "§aConfigurações recarregadas com sucesso!"
+
+# Sistema de Scoreboard
+scoreboard:
+  title: "&6&lCRAFTANDHELPS"
+  lines:
+    - "&7{online} jogadores"
+    - ""
+    - "&fLobby: &b#1"
+    - ""
+    - "&fRankUP: &a0"
+    - "&fBedwars: &a0"
+    - ""
+    - "&fwww.craftandhelps.com"
+
+# Sistema de Tab
+tab:
+  header:
+    - ""
+    - "&6&lCRAFTANDHELPS"
+    - "&fcraftandhelps.com"
+    - ""
+  footer:
+    - ""
+    - "&7Queres ajudar o servidor a manter-se online?"
+    - "&7acessa &ewww.craftandhelps.com&7."
+    - ""
+
+# Itens de Entrada
+join-items:
+  gamemodes:
+    name: "&aModos de Jogo"
+    lore:
+      - ""
+      - "&7Clique para escolher"
+      - "&7um modo de jogo!"
+      - ""
+  profile:
+    name: "&aPerfil de {player}"
+    lore:
+      - ""
+      - "&7Veja suas estatísticas"
+      - "&7e conquistas!"
+      - ""
+  cosmetics:
+    name: "&aCosméticos"
+    lore:
+      - ""
+      - "&7Personalize sua"
+      - "&7aparência no servidor!"
+      - ""
+  visibility:
+    name-on: "&aJogadores Visíveis"
+    lore-on:
+      - ""
+      - "&7Clique para esconder"
+      - "&7os jogadores!"
+      - ""
+      - "&aStatus: &fVisíveis"
+      - ""
+    name-off: "&cJogadores Ocultos"
+    lore-off:
+      - ""
+      - "&7Clique para mostrar"
+      - "&7os jogadores!"
+      - ""
+      - "&cStatus: &fOcultos"
+      - ""
+    toggled-on: "&aJogadores agora estão visíveis!"
+    toggled-off: "&cJogadores agora estão ocultos!"
+  lobbies:
+    name: "&aLobbies"
+    lore:
+      - ""
+      - "&7Conecte-se a outro"
+      - "&7lobby do servidor!"
+      - ""
+hologram:
+  help:
+    header: "&6&m------------------------------"
+    footer: "&6&m------------------------------"
+  created: "&aHolograma &f{name}&a criado com sucesso!"
+  deleted: "&aHolograma &f{name}&a removido com sucesso!"
+  already-exists: "&cO holograma &f{name}&c já existe!"
+  not-found: "&cO holograma &f{name}&c não foi encontrado!"
+  no-text: "&cVocê precisa especificar um texto!"
+  invalid-line: "&cNúmero de linha inválido!"
+  line-added: "&aLinha adicionada ao holograma &f{name}&a!"
+  line-set: "&aLinha &f{line}&a do holograma &f{name}&a definida!"
+  line-inserted: "&aLinha inserida na posição &f{line}&a do holograma &f{name}&a!"
+  line-removed: "&aLinha &f{line}&a do holograma &f{name}&a removida!"
+  list-empty: "&cNão há hologramas criados!"
+  list-header: "&6Hologramas criados:"
+  list-footer: "&7Total: &f{count}&7 holograma(s)"
+  teleported: "&aVocê foi teleportado para o holograma &f{name}&a!"
+  moved: "&aHolograma &f{name}&a movido para sua localização!"
+
+pvp:
+  enabled: "&a&lPvP Ativado! &7Você agora pode lutar contra outros jogadores."
+  disabled: "&c&lPvP Desativado! &7Seu streak foi de &e{streak} &7kills."
+  already-enabled: "&c&lPvP já está ativado!"
+
+  kill: "&a&l+1 Kill! &7Você matou &c{victim}&7. Streak: &e{streak}"
+  death: "&c&lVocê morreu! &7Assassinado por &c{killer}&7. Seu streak era &e{streak}"
+  death-broadcast: "&c☠ &f{victim} &7foi morto por &c{killer} &7[Streak: &e{streak}&7]"
+  death-environment: "&c☠ &f{victim} &7morreu na arena PvP"
+
+  target-not-in-pvp: "&cEsse jogador não está no modo PvP!"
+
+  # Sistema de Combat Tag
+  combat-start: "&c&l⚔ Você entrou em combate! &7Aguarde 5 segundos para sair."
+  combat-end: "&a&l✓ Você saiu do combate! &7Agora pode usar /sair."
+  combat-tag: "&c&lEm combate! &7Aguarde &e{time}s &7para sair do PvP."
+
+  respawn: "&aVocê respawnou com um novo kit!"
+  apple-received: "&6+1 Maçã Dourada! &7Continue eliminando!"
+
+stats:
+  header: "&6&m------------------------------"
+  title: "&6Estatísticas de &f{player}"
+  kills: "&eKills: &f{kills}"
+  deaths: "&eMortes: &f{deaths}"
+  kdr: "&eKDR: &f{kdr}"
+  highest-streak: "&eMaior Streak: &f{streak}"
+  kills-rank: "&eRanking (Kills): &f#{kills_position}"
+  kdr-rank: "&eRanking (KDR): &f#{kdr_position}"
+  footer: "&6&m------------------------------"
+
+# Sistema de Ranking
+ranking:
+  invalid-type: "&cTipo inválido! Use: &fkills&c, &fkdr&c ou &fstreak"
+  empty: "&cAinda não há dados de ranking!"
+  footer: "&6&m------------------------------"
+
+  # Ranking de Kills
+  kills-header: "&6&m------------------------------\n&6&lTOP 10 - KILLS\n&6&m------------------------------"
+  kills-line: "{position} &f{player} &7- &e{kills} kills &7(KDR: &f{kdr}&7)"
+
+  # Ranking de KDR
+  kdr-header: "&6&m------------------------------\n&6&lTOP 10 - KDR\n&6&m------------------------------"
+  kdr-line: "{position} &f{player} &7- &eKDR: {kdr} &7({kills}/{deaths})"
+
+  # Ranking de Streak
+  streak-header: "&6&m------------------------------\n&6&lTOP 10 - KILLSTREAK\n&6&m------------------------------"
+  streak-line: "{position} &f{player} &7- &e{streak} streak &7({kills} kills)"
+
+preferences:
+  enabled: "&aAtivado"
+  disabled: "&cDesativado"
+  status-enabled: "&aEstado: &fAtivado ✔"
+  status-disabled: "&cEstado: &fDesativado ✖"
+
+  chat-toggled: "&aChat {state}&a!"
+  pm-toggled: "&aMensagens privadas {state}&a!"
+  fly-toggled: "&aModo de voo {state}&a!"
+
+  chat-self-disabled: "&cVocê desativou o chat nas suas preferências!"
+  pm-self-disabled: "&cVocê desativou mensagens privadas nas suas preferências!"
+
+tell:
+  usage: "&cUso: /tell <jogador> <mensagem>"
+  reply-usage: "&cUso: /reply <mensagem>"
+  target-not-found: "&cJogador &f{player}&c não encontrado ou offline!"
+  target-offline: "&cO jogador está offline!"
+  target-disabled: "&f{player}&c desativou mensagens privadas!"
+  self-disabled: "&cVocê desativou mensagens privadas nas suas preferências!"
+  self-message: "&cVocê não pode enviar mensagem para si mesmo!"
+  no-previous: "&cVocê não tem nenhuma conversa recente!"
