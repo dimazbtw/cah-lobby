@@ -1,10 +1,7 @@
 package github.dimazbtw.lobby.commands.registry;
 
 import github.dimazbtw.lobby.Main;
-import github.dimazbtw.lobby.commands.HologramCommands;
-import github.dimazbtw.lobby.commands.LobbyCommand;
-import github.dimazbtw.lobby.commands.NPCCommands;
-import github.dimazbtw.lobby.commands.UtilityCommands;
+import github.dimazbtw.lobby.commands.*;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
 import me.saiintbrisson.minecraft.command.message.MessageHolder;
 import me.saiintbrisson.minecraft.command.message.MessageType;
@@ -18,7 +15,10 @@ public class CommandRegistry {
                 new UtilityCommands(plugin.getLanguageManager()),
                 new LobbyCommand(plugin),
                 new HologramCommands(plugin),
-                new NPCCommands(plugin)
+                new NPCCommands(plugin),
+                new StatsCommand(plugin),
+                new PreferencesCommands(plugin),
+                new TellCommands(plugin)
         );
 
         messageHolder.setMessage(MessageType.ERROR, "§cOcorreu um erro durante a execução deste comando.");

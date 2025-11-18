@@ -164,9 +164,18 @@ public class JoinItemsManager {
 
         // Aplicar visibilidade
         if (newVisibility) {
-            // Mostrar todos os jogadores
+            // Mostrar todos os jogadores DO MESMO MODO (PvP ou Lobby)
+            boolean playerInPvP = plugin.getPvPManager().isPvPEnabled(player);
+
             for (Player target : plugin.getServer().getOnlinePlayers()) {
-                player.showPlayer(target);
+                if (target.equals(player)) continue;
+
+                boolean targetInPvP = plugin.getPvPManager().isPvPEnabled(target);
+
+                // Só mostrar se ambos estiverem no mesmo "modo"
+                if (playerInPvP == targetInPvP) {
+                    player.showPlayer(target);
+                }
             }
         } else {
             // Esconder todos os jogadores

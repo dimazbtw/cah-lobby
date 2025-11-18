@@ -18,11 +18,10 @@ public class PvPListener implements Listener {
     }
 
     /**
-     * Previne dano entre jogadores que não estão em modo PvP
+     * Marca jogadores em combate quando há PvP
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
-        // Verificar se é PvP (jogador atacando jogador)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPvPDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) {
             return;
         }
@@ -30,17 +29,14 @@ public class PvPListener implements Listener {
         Player attacker = (Player) event.getDamager();
         Player victim = (Player) event.getEntity();
 
-        boolean attackerInPvP = plugin.getPvPManager().isPvPEnabled(attacker);
-        boolean victimInPvP = plugin.getPvPManager().isPvPEnabled(victim);
-
-        // Ambos devem estar em modo PvP
-        if (!attackerInPvP || !victimInPvP) {
-            event.setCancelled(true);
-
-            if (attackerInPvP && !victimInPvP) {
-                plugin.getLanguageManager().sendMessage(attacker, "pvp.target-not-in-pvp");
-            }
+        // Verificar se ambos estão em modo PvP
+        if (!plugin.getPvPManager().isPvPEnabled(attacker) || !plugin.getPvPManager().isPvPEnabled(victim)) {
+            return;
         }
+
+        // Marcar ambos como em combate
+        plugin.getPvPManager().tagCombat(attacker);
+        plugin.getPvPManager().tagCombat(victim);
     }
 
     /**
@@ -51,43 +47,72 @@ public class PvPListener implements Listener {
         Player victim = event.getEntity();
         Player killer = victim.getKiller();
 
-        // Verificar se é morte no PvP
-        if (killer == null || !plugin.getPvPManager().isPvPEnabled(victim)) {
+        // Se a vítima não está em modo PvP, ignorar
+        if (!plugin.getPvPManager().isPvPEnabled(victim)) {
             return;
         }
 
-        // Processar kill
-        if (plugin.getPvPManager().isPvPEnabled(killer)) {
-            plugin.getPvPManager().handleKill(killer, victim);
-        }
-
-        // Limpar drops no lobby
+        // Limpar drops e exp sempre que morrer em PvP
         event.getDrops().clear();
         event.setDroppedExp(0);
 
-        // Customizar mensagem de morte
-        String deathMessage = plugin.getLanguageManager()
-                .getMessage(plugin.getLanguageManager().getPlayerLanguage(victim), "pvp.death-broadcast")
-                .replace("{victim}", victim.getName())
-                .replace("{killer}", killer.getName())
-                .replace("{streak}", String.valueOf(plugin.getPvPManager().getKillStreak(killer)));
+        // Verificar se foi morte por outro jogador em PvP
+        if (killer != null && plugin.getPvPManager().isPvPEnabled(killer)) {
+            // Processar kill
+            plugin.getPvPManager().handleKill(killer, victim);
 
-        event.setDeathMessage(deathMessage);
+            // Customizar mensagem de morte PvP
+            String deathMessage = plugin.getLanguageManager()
+                    .getMessage(plugin.getLanguageManager().getPlayerLanguage(victim), "pvp.death-broadcast")
+                    .replace("{victim}", victim.getName())
+                    .replace("{killer}", killer.getName())
+                    .replace("{streak}", String.valueOf(plugin.getPvPManager().getKillStreak(killer)));
+
+            event.setDeathMessage(deathMessage);
+        } else {
+            // Morte por ambiente (queda, fogo, etc) no modo PvP
+            String deathMessage = plugin.getLanguageManager()
+                    .getMessage(plugin.getLanguageManager().getPlayerLanguage(victim), "pvp.death-environment")
+                    .replace("{victim}", victim.getName());
+
+            event.setDeathMessage(deathMessage);
+        }
+
+        // DESATIVAR PvP da vítima (isso limpará inventário, combat tag e removerá da lista)
+        plugin.getPvPManager().forceDisablePvP(victim);
     }
 
     /**
-     * Respawn rápido no lobby
+     * Respawn no spawn do lobby com itens normais de join
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        // Se estava em PvP, respawnar no spawn do lobby
-        if (plugin.getPvPManager().isPvPEnabled(player)) {
-            // Tentar teleportar para o spawn (se existir)
-            if (plugin.getLobbyCommand() != null && plugin.getLobbyCommand().hasSpawn()) {
-                event.setRespawnLocation(plugin.getLobbyCommand().getSpawn());
-            }
+        // Teleportar para o spawn se existir
+        if (plugin.getLobbyCommand() != null && plugin.getLobbyCommand().hasSpawn()) {
+            event.setRespawnLocation(plugin.getLobbyCommand().getSpawn());
         }
+
+        // Dar itens de join e restaurar status após 1 tick
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline()) {
+                // Garantir que inventário está limpo
+                player.getInventory().clear();
+                player.getInventory().setArmorContents(null);
+
+                // Dar itens de join normais
+                plugin.getJoinItemsManager().giveJoinItems(player);
+
+                // Restaurar vida e fome
+                player.setHealth(player.getMaxHealth());
+                player.setFoodLevel(20);
+                player.setSaturation(20F);
+                player.setFireTicks(0);
+
+                // Atualizar visibilidade (o jogador saiu do PvP ao morrer)
+                plugin.getPvPManager().updatePlayerVisibility(player);
+            }
+        }, 1L);
     }
 }

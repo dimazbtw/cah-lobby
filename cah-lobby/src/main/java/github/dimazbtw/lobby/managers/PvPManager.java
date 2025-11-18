@@ -14,9 +14,36 @@ public class PvPManager {
     private final Main plugin;
     private final Set<UUID> pvpPlayers = new HashSet<>();
     private final Map<UUID, Integer> killStreak = new HashMap<>();
+    private final Map<UUID, Long> combatTag = new HashMap<>(); // Timestamp do último combate
+    private static final long COMBAT_TIME = 5000; // 5 segundos em milissegundos
 
     public PvPManager(Main plugin) {
         this.plugin = plugin;
+        startCombatTagChecker();
+    }
+
+    /**
+     * Inicia a task que verifica e remove combat tags expirados
+     */
+    private void startCombatTagChecker() {
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            long currentTime = System.currentTimeMillis();
+
+            // Verificar todos os jogadores com combat tag
+            for (UUID uuid : new HashSet<>(combatTag.keySet())) {
+                long lastCombat = combatTag.get(uuid);
+
+                // Se passou mais de 5 segundos, remover o tag
+                if ((currentTime - lastCombat) >= COMBAT_TIME) {
+                    Player player = plugin.getServer().getPlayer(uuid);
+                    if (player != null && player.isOnline()) {
+                        removeCombatTag(player);
+                    } else {
+                        combatTag.remove(uuid);
+                    }
+                }
+            }
+        }, 20L, 20L); // Verifica a cada segundo
     }
 
     /**
@@ -42,6 +69,9 @@ public class PvPManager {
         // Mensagem de ativação
         plugin.getLanguageManager().sendMessage(player, "pvp.enabled");
 
+        // Atualizar visibilidade
+        updatePlayerVisibility(player);
+
         plugin.getLogger().info(player.getName() + " entrou no modo PvP");
     }
 
@@ -53,24 +83,43 @@ public class PvPManager {
             return;
         }
 
-        // Limpar inventário
-        player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
-
-        // Dar items de join novamente
-        plugin.getJoinItemsManager().giveJoinItems(player);
+        // Verificar se está em combate
+        if (isInCombat(player)) {
+            long timeLeft = getRemainingCombatTime(player);
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("time", String.valueOf(timeLeft / 1000));
+            plugin.getLanguageManager().sendMessage(player, "pvp.combat-tag", placeholders);
+            return;
+        }
 
         // Remover da lista de PvP
         pvpPlayers.remove(player.getUniqueId());
 
-        // Resetar kill streak
+        // Obter kill streak antes de remover
         int streak = killStreak.getOrDefault(player.getUniqueId(), 0);
         killStreak.remove(player.getUniqueId());
 
-        // Mensagem de desativação
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("streak", String.valueOf(streak));
-        plugin.getLanguageManager().sendMessage(player, "pvp.disabled", placeholders);
+        // Remover combat tag
+        combatTag.remove(player.getUniqueId());
+
+        // Se o jogador está vivo (saiu por comando), dar itens e mensagem
+        if (player.isOnline() && player.getHealth() > 0) {
+            // Limpar inventário
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+
+            // Dar items de join novamente
+            plugin.getJoinItemsManager().giveJoinItems(player);
+
+            // Mensagem de desativação
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("streak", String.valueOf(streak));
+            plugin.getLanguageManager().sendMessage(player, "pvp.disabled", placeholders);
+        }
+        // Se o jogador está morto, o PvPListener cuidará do respawn e itens
+
+        // Atualizar visibilidade
+        updatePlayerVisibility(player);
 
         plugin.getLogger().info(player.getName() + " saiu do modo PvP (streak: " + streak + ")");
     }
@@ -85,7 +134,7 @@ public class PvPManager {
     /**
      * Dá o kit PvP completo ao jogador
      */
-    private void giveKit(Player player) {
+    public void giveKit(Player player) {
         // Armadura de diamante completa
         ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET);
         ItemStack chestplate = new ItemStack(Material.DIAMOND_CHESTPLATE);
@@ -160,6 +209,10 @@ public class PvPManager {
         int victimStreak = killStreak.getOrDefault(victim.getUniqueId(), 0);
         killStreak.put(victim.getUniqueId(), 0);
 
+        // Salvar estatísticas no banco de dados
+        plugin.getStatsDatabase().addKill(killer, streak);
+        plugin.getStatsDatabase().addDeath(victim);
+
         // Mensagens
         Map<String, String> killerPlaceholders = new HashMap<>();
         killerPlaceholders.put("victim", victim.getName());
@@ -170,17 +223,6 @@ public class PvPManager {
         victimPlaceholders.put("killer", killer.getName());
         victimPlaceholders.put("streak", String.valueOf(victimStreak));
         plugin.getLanguageManager().sendMessage(victim, "pvp.death", victimPlaceholders);
-
-        // Respawn da vítima com kit novo
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            if (victim.isOnline() && isPvPEnabled(victim)) {
-                victim.getInventory().clear();
-                victim.getInventory().setArmorContents(null);
-                giveKit(victim);
-                victim.setHealth(20.0);
-                victim.setFoodLevel(20);
-            }
-        }, 1L);
 
         plugin.getLogger().info(killer.getName() + " matou " + victim.getName() + " no PvP (streak: " + streak + ")");
     }
@@ -205,6 +247,97 @@ public class PvPManager {
     public void removePlayer(Player player) {
         pvpPlayers.remove(player.getUniqueId());
         killStreak.remove(player.getUniqueId());
+        combatTag.remove(player.getUniqueId());
+    }
+
+    /**
+     * Marca um jogador como em combate
+     */
+    public void tagCombat(Player player) {
+        if (!isPvPEnabled(player)) {
+            return;
+        }
+
+        // Se o jogador já está em combate, não enviar a mensagem novamente
+        boolean alreadyInCombat = isInCombat(player);
+
+        combatTag.put(player.getUniqueId(), System.currentTimeMillis());
+
+        if (!alreadyInCombat) {
+            // Enviar mensagem apenas na primeira vez até o tag expirar
+            plugin.getLanguageManager().sendMessage(player, "pvp.combat-start");
+        }
+    }
+
+    /**
+     * Verifica se um jogador está em combate
+     */
+    public boolean isInCombat(Player player) {
+        if (!combatTag.containsKey(player.getUniqueId())) {
+            return false;
+        }
+
+        long lastCombat = combatTag.get(player.getUniqueId());
+        long currentTime = System.currentTimeMillis();
+
+        return (currentTime - lastCombat) < COMBAT_TIME;
+    }
+
+    /**
+     * Obtém o tempo restante de combate em milissegundos
+     */
+    public long getRemainingCombatTime(Player player) {
+        if (!combatTag.containsKey(player.getUniqueId())) {
+            return 0;
+        }
+
+        long lastCombat = combatTag.get(player.getUniqueId());
+        long currentTime = System.currentTimeMillis();
+        long elapsed = currentTime - lastCombat;
+
+        return Math.max(0, COMBAT_TIME - elapsed);
+    }
+
+    /**
+     * Remove o combat tag de um jogador
+     */
+    public void removeCombatTag(Player player) {
+        if (combatTag.remove(player.getUniqueId()) != null) {
+            plugin.getLanguageManager().sendMessage(player, "pvp.combat-end");
+        }
+    }
+
+    /**
+     * Atualiza a visibilidade de um jogador em relação aos outros
+     */
+    public void updatePlayerVisibility(Player player) {
+        boolean playerInPvP = isPvPEnabled(player);
+
+        for (Player online : plugin.getServer().getOnlinePlayers()) {
+            if (online.equals(player)) continue;
+
+            boolean onlineInPvP = isPvPEnabled(online);
+
+            // Se ambos estão em PvP OU ambos estão fora do PvP = podem se ver
+            if (playerInPvP == onlineInPvP) {
+                player.showPlayer(online);
+                online.showPlayer(player);
+            } else {
+                // Se um está em PvP e o outro não = não podem se ver
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+            }
+        }
+    }
+
+    /**
+     * Atualiza a visibilidade de TODOS os jogadores
+     * Útil ao recarregar o plugin ou ao iniciar
+     */
+    public void updateAllPlayersVisibility() {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            updatePlayerVisibility(player);
+        }
     }
 
     /**
@@ -222,4 +355,12 @@ public class PvPManager {
         pvpPlayers.clear();
         killStreak.clear();
     }
+
+    public void forceDisablePvP(Player player) {
+        pvpPlayers.remove(player.getUniqueId());
+        killStreak.remove(player.getUniqueId());
+        combatTag.remove(player.getUniqueId());
+        updatePlayerVisibility(player);
+    }
+
 }

@@ -2,6 +2,7 @@ package github.dimazbtw.lobby.commands;
 
 import github.dimazbtw.lobby.Main;
 import github.dimazbtw.lobby.config.LanguageManager;
+import github.dimazbtw.lobby.managers.PvPManager;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
@@ -153,7 +154,9 @@ public class LobbyCommand {
             plugin.getHologramManager().reload();
         }
 
+        plugin.getPvPManager().disablePvP(player);
         languageManager.sendMessage(player, "lobby.reloaded");
+        plugin.getMenuManager().reload();
     }
 
     @Command(
@@ -162,9 +165,24 @@ public class LobbyCommand {
             description = "Sair do modo de pvp",
             target = CommandTarget.PLAYER
     )
-    public void leavePvP(Context<Player> context){
-        plugin.getPvPManager().disablePvP(context.getSender());
+    public void leavePvP(Context<Player> context) {
+        Player player = context.getSender();
+        PvPManager pvpManager = plugin.getPvPManager();
+
+        // Verificar se está em combate
+        if (pvpManager.isInCombat(player)) {
+            long timeLeft = pvpManager.getRemainingCombatTime(player);
+            Map<String, String> placeholders = new HashMap<>();
+            placeholders.put("time", String.valueOf(timeLeft / 1000));
+
+            plugin.getLanguageManager().sendMessage(player, "pvp.combat-tag", placeholders);
+            return;
+        }
+
+        // Desativar PvP normalmente se não estiver em combate
+        pvpManager.disablePvP(player);
     }
+
     /**
      * Verifica se existe um spawn definido
      */

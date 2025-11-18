@@ -968,6 +968,9 @@ public class NPCManager {
             } else if (processedCommand.startsWith("[SERVER]")) {
                 String serverName = processedCommand.substring(8).trim();
                 sendPlayerToBungeeServer(player, serverName);
+            } else if (processedCommand.startsWith("[MESSAGE]")) {
+                String message = processedCommand.substring(9).trim().replace("&", "§");
+                player.sendMessage(message);
             } else {
                 player.performCommand(processedCommand);
             }

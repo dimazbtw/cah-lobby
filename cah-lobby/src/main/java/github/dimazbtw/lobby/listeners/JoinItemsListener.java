@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -39,6 +40,11 @@ public class JoinItemsListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
@@ -61,7 +67,7 @@ public class JoinItemsListener implements Listener {
             if (itemName.equals(gamemodesName.replace("&", "§"))) {
                 event.setCancelled(true);
                 // TODO: Abrir menu de modos de jogo
-                player.sendMessage("§7[Sistema] §cMenu de modos de jogo em breve!");
+                plugin.getMenuManager().openMenu(player, "game-modes");
                 return;
             }
         }
@@ -72,7 +78,7 @@ public class JoinItemsListener implements Listener {
             if (itemName.contains(profileName.replace("&", "§").split(" ")[0])) {
                 event.setCancelled(true);
                 // TODO: Abrir menu de perfil
-                player.sendMessage("§7[Sistema] §cMenu de perfil em breve!");
+                plugin.getMenuManager().openMenu(player, "profile");
                 return;
             }
         }
@@ -106,7 +112,7 @@ public class JoinItemsListener implements Listener {
             if (itemName.equals(lobbiesName.replace("&", "§"))) {
                 event.setCancelled(true);
                 // TODO: Abrir menu de lobbies
-                player.sendMessage("§7[Sistema] §cMenu de lobbies em breve!");
+                plugin.getMenuManager().openMenu(player, "lobbies");
                 return;
             }
         }

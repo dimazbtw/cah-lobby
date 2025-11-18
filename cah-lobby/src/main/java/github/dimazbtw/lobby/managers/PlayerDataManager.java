@@ -141,4 +141,127 @@ public class PlayerDataManager {
         setAdminMode(player, newMode);
         return newMode;
     }
+
+    public boolean isChatEnabled(Player player) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            return true; // Padrão: habilitado
+        }
+
+        return config.getBoolean("preferences.chat", true);
+    }
+
+    /**
+     * Define se o chat está habilitado
+     */
+    public void setChatEnabled(Player player, boolean enabled) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            loadPlayerData(player);
+            config = playerDataCache.get(uuid);
+        }
+
+        if (config != null) {
+            config.set("preferences.chat", enabled);
+            savePlayerData(player);
+        }
+    }
+
+    /**
+     * Alterna o estado do chat
+     */
+    public boolean toggleChat(Player player) {
+        boolean current = isChatEnabled(player);
+        boolean newState = !current;
+        setChatEnabled(player, newState);
+        return newState;
+    }
+
+    /**
+     * Verifica se mensagens privadas estão habilitadas
+     */
+    public boolean isPrivateMessagesEnabled(Player player) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            return true; // Padrão: habilitado
+        }
+
+        return config.getBoolean("preferences.private-messages", true);
+    }
+
+    /**
+     * Define se mensagens privadas estão habilitadas
+     */
+    public void setPrivateMessagesEnabled(Player player, boolean enabled) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            loadPlayerData(player);
+            config = playerDataCache.get(uuid);
+        }
+
+        if (config != null) {
+            config.set("preferences.private-messages", enabled);
+            savePlayerData(player);
+        }
+    }
+
+    /**
+     * Alterna o estado de mensagens privadas
+     */
+    public boolean togglePrivateMessages(Player player) {
+        boolean current = isPrivateMessagesEnabled(player);
+        boolean newState = !current;
+        setPrivateMessagesEnabled(player, newState);
+        return newState;
+    }
+
+    /**
+     * Verifica se o modo fly está habilitado (preferência)
+     */
+    public boolean isFlyPreferenceEnabled(Player player) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            return false; // Padrão: desabilitado
+        }
+
+        return config.getBoolean("preferences.fly", false);
+    }
+
+    /**
+     * Define se o modo fly está habilitado (preferência)
+     */
+    public void setFlyPreferenceEnabled(Player player, boolean enabled) {
+        UUID uuid = player.getUniqueId();
+        FileConfiguration config = playerDataCache.get(uuid);
+
+        if (config == null) {
+            loadPlayerData(player);
+            config = playerDataCache.get(uuid);
+        }
+
+        if (config != null) {
+            config.set("preferences.fly", enabled);
+            savePlayerData(player);
+        }
+    }
+
+    /**
+     * Alterna o estado do fly (preferência)
+     */
+    public boolean toggleFlyPreference(Player player) {
+        boolean current = isFlyPreferenceEnabled(player);
+        boolean newState = !current;
+        setFlyPreferenceEnabled(player, newState);
+        return newState;
+    }
 }

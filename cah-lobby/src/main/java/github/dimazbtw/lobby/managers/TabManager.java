@@ -93,7 +93,7 @@ public class TabManager {
         // Obter idioma do jogador
         String playerLang = plugin.getLanguageManager().getPlayerLanguage(player);
 
-        // Obter header do idioma
+        // Obter header do idiomaf
         List<String> headerLines = plugin.getLanguageManager().getMessageList(playerLang, "tab.header");
         String header = joinLines(headerLines);
 
@@ -142,6 +142,7 @@ public class TabManager {
             if (!team.hasEntry(target.getName())) {
                 team.addEntry(target.getName());
             }
+            target.setPlayerListName(prefix + target.getName());
         }
     }
 
@@ -150,27 +151,23 @@ public class TabManager {
      */
     private String getTeamName(Player player) {
         if (!luckPermsEnabled) {
-            return "999_default";
+            return "999";
         }
 
         try {
             User user = luckPerms.getUserManager().getUser(player.getUniqueId());
-            if (user == null) {
-                return "999_default";
-            }
+            if (user == null) return "999";
 
-            String primaryGroup = user.getPrimaryGroup();
-            int weight = getGroupWeight(primaryGroup);
+            int weight = getGroupWeight(user.getPrimaryGroup());
 
-            // Inverter peso (quanto menor o peso, maior a prioridade na tab)
-            // Adicionar zeros à esquerda para ordenação correta
-            String paddedWeight = String.format("%03d", 999 - weight);
+            // 999 - weight = quanto menor o peso, maior a prioridade
+            return String.format("%03d", 999 - weight);
 
-            return paddedWeight + "_" + primaryGroup;
         } catch (Exception e) {
-            return "999_default";
+            return "999";
         }
     }
+
 
     /**
      * Obtém o peso/prioridade do grupo

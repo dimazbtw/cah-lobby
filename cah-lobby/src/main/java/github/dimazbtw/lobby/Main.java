@@ -1,11 +1,17 @@
+// Atualize a classe Main.java:
+
 package github.dimazbtw.lobby;
 
 import github.dimazbtw.lobby.commands.LobbyCommand;
 import github.dimazbtw.lobby.commands.registry.CommandRegistry;
 import github.dimazbtw.lobby.config.LanguageManager;
+import github.dimazbtw.lobby.database.Database; // ADICIONE ESTE IMPORT
+import github.dimazbtw.lobby.hooks.PlaceholderHook;
 import github.dimazbtw.lobby.listeners.*;
 import github.dimazbtw.lobby.managers.*;
 import github.dimazbtw.lobby.utils.PacketAS;
+import github.dimazbtw.lobby.views.MenuListener;
+import github.dimazbtw.lobby.views.MenuManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,8 +30,10 @@ public final class Main extends JavaPlugin {
     private LobbyCommand lobbyCommand;
     private NPCManager npcManager;
     private PvPManager pvPManager;
-
+    private Database statsDatabase; // ADICIONE ESTA LINHA
     private PacketAS packetAS;
+    private MenuManager menuManager;
+    private TellManager tellManager;
 
     @Override
     public void onEnable() {
@@ -35,6 +43,10 @@ public final class Main extends JavaPlugin {
         getLogger().info("=== Iniciando Lobby Plugin ===");
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        // Inicializar Database ANTES de tudo
+        getLogger().info("Inicializando Database...");
+        statsDatabase = new Database(this); // ADICIONE ESTA LINHA
 
         // Inicializar LanguageManager
         getLogger().info("Carregando sistema de idiomas...");
@@ -85,7 +97,15 @@ public final class Main extends JavaPlugin {
         getLogger().info("Inicializando PvPManager...");
         pvPManager = new PvPManager(this);
 
+        getLogger().info("Inicializando MenuManager...");
+        menuManager = new MenuManager(this);
+
+        getLogger().info("Inicializando TellManager...");
+        tellManager = new TellManager(this);
+
         packetAS = new PacketAS(this);
+
+        new PlaceholderHook(this).register();
 
         // Registrar comandos
         getLogger().info("Registrando comandos...");
@@ -101,6 +121,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Fechar conexão com banco de dados
+        if (statsDatabase != null) {
+            statsDatabase.close(); // ADICIONE ESTA LINHA
+        }
 
         // Parar scoreboard
         if (scoreboardManager != null) {
@@ -138,5 +162,7 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new NPCInteractListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PvPListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PvPVisibilityListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new MenuListener(this), this);
     }
 }

@@ -70,21 +70,17 @@ public class ProtectionListener implements Listener {
         Player player = (Player) event.getEntity();
         PvPManager pvpManager = plugin.getPvPManager();
 
-        // Verificar proteção global (Totalmente desativar danos)
+        // PRIORIDADE 1: Se o jogador estiver no modo PvP, SEMPRE permitir dano
+        if (pvpManager != null && pvpManager.isPvPEnabled(player)) {
+            return; // Permite QUALQUER dano (queda, fogo, combate, etc.)
+        }
+
+        // PRIORIDADE 2: Se NÃO estiver em PvP e a proteção global estiver ativa
         if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
             event.setCancelled(true);
             player.setHealth(player.getMaxHealth());
             player.setFireTicks(0);
-            return;
         }
-
-        // Se o jogador NÃO estiver no modo PvP, cancelar o dano
-        if (!pvpManager.isPvPEnabled(player)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        // Caso contrário, permitir dano normal
     }
 
 
@@ -99,45 +95,58 @@ public class ProtectionListener implements Listener {
 
         Entity damager = event.getDamager();
 
-        // Se for dano direto entre jogadores
+        // Identificar o atacante
         if (damager instanceof Player) {
             attacker = (Player) damager;
-        }
-        // Se o atacante usar projétil (ex: flecha)
-        else if (damager instanceof Projectile) {
+        } else if (damager instanceof Projectile) {
             Projectile proj = (Projectile) damager;
             if (proj.getShooter() instanceof Player) {
                 attacker = (Player) proj.getShooter();
             }
-        }
-        // Se o atacante estiver montado em algo (Suporte, por ex.)
-        else if (damager.getPassenger() instanceof Player) {
+        } else if (damager.getPassenger() instanceof Player) {
             attacker = (Player) damager.getPassenger();
         }
 
-        // Se o atacante não é um jogador, não bloqueamos
-        if (attacker == null) {
-            return;
-        }
-
-        // Se a proteção geral de PvP no lobby estiver ativada
-        if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        // Usar PvPManager para decidir
         PvPManager pvpManager = plugin.getPvPManager();
+
+        // Se o atacante não é um jogador (mob/ambiente)
+        if (attacker == null) {
+            // Se a vítima estiver em modo PvP, permitir dano de mobs/ambiente
+            if (pvpManager != null && pvpManager.isPvPEnabled(victim)) {
+                return;
+            }
+            // Caso contrário, verificar proteção global
+            if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
+                event.setCancelled(true);
+            }
+            return;
+        }
+
+        // A partir daqui, o atacante É um jogador
+        if (pvpManager == null) {
+            // Se o PvPManager não existe, aplicar proteção global
+            if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
+                event.setCancelled(true);
+            }
+            return;
+        }
 
         boolean attackerPvP = pvpManager.isPvPEnabled(attacker);
         boolean victimPvP = pvpManager.isPvPEnabled(victim);
 
+        // PRIORIDADE MÁXIMA: Se AMBOS estiverem em modo PvP, SEMPRE permitir
+        if (attackerPvP && victimPvP) {
+            return; // Permite PvP INCONDICIONALMENTE
+        }
+
         // Se algum dos dois não estiver com PvP ativo, cancelar o dano
-        if (!attackerPvP || !victimPvP) {
-            event.setCancelled(true);
+        event.setCancelled(true);
+
+        // Informar o atacante se ele tentou atacar alguém sem PvP
+        if (attackerPvP && !victimPvP) {
+            plugin.getLanguageManager().sendMessage(attacker, "pvp.target-not-in-pvp");
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onWeatherChange(WeatherChangeEvent event) {
