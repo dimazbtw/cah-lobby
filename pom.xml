@@ -113,5 +113,11 @@
             <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.1.0</version> <!-- Verifique se há uma versão mais recente -->
+        </dependency>
+
     </dependencies>
 </project>
