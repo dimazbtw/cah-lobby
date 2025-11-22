@@ -103,6 +103,8 @@ public final class Main extends JavaPlugin {
         getLogger().info("Inicializando TellManager...");
         tellManager = new TellManager(this);
 
+        LobbyAPI.initialize(this);
+
         packetAS = new PacketAS(this);
 
         new PlaceholderHook(this).register();

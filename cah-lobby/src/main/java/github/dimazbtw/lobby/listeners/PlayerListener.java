@@ -14,6 +14,8 @@ public class PlayerListener implements Listener {
         this.plugin = plugin;
     }
 
+
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         // Limpar dados dos NPCs do jogador
