@@ -1,0 +1,265 @@
+# Menu de Ranking da Arena FFA - KDR
+menu:
+  pt_PT:
+    title: "&c&lRANKING ARENA &8(KDR)"
+    size: 54
+    update-interval: 40
+
+    items:
+      toggle-kdr:
+        slot: 4
+        material: "DIAMOND_SWORD"
+        name: "&e&lALTERNAR RANKING"
+        lore:
+          - ""
+          - "&7Clique para alternar entre:"
+          - "&7► Abates"
+          - "&a► KDR"
+          - ""
+        actions:
+          - "[MENU] arena-ranking"
+
+      top1:
+        slot: 13
+        material: "SKULL_ITEM:3:{top_arena_1_name}"
+        name: "&6&l#1 &f{top_arena_1_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_1_kdr}"
+          - "&7Abates: &a{top_arena_1_kills}"
+          - "&7Mortes: &c{top_arena_1_deaths}"
+          - ""
+        actions: []
+
+      top2:
+        slot: 21
+        material: "SKULL_ITEM:3:{top_arena_2_name}"
+        name: "&7&l#2 &f{top_arena_2_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_2_kdr}"
+          - "&7Abates: &a{top_arena_2_kills}"
+          - "&7Mortes: &c{top_arena_2_deaths}"
+          - ""
+        actions: []
+
+      top3:
+        slot: 23
+        material: "SKULL_ITEM:3:{top_arena_3_name}"
+        name: "&c&l#3 &f{top_arena_3_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_3_kdr}"
+          - "&7Abates: &a{top_arena_3_kills}"
+          - "&7Mortes: &c{top_arena_3_deaths}"
+          - ""
+        actions: []
+
+      top4:
+        slot: 29
+        material: "PAPER"
+        name: "&e#4 &f{top_arena_4_name}"
+        lore:
+          - "&7KDR: &e{top_arena_4_kdr} &8| &7Abates: &a{top_arena_4_kills}"
+        actions: []
+
+      top5:
+        slot: 30
+        material: "PAPER"
+        name: "&e#5 &f{top_arena_5_name}"
+        lore:
+          - "&7KDR: &e{top_arena_5_kdr} &8| &7Abates: &a{top_arena_5_kills}"
+        actions: []
+
+      top6:
+        slot: 31
+        material: "PAPER"
+        name: "&e#6 &f{top_arena_6_name}"
+        lore:
+          - "&7KDR: &e{top_arena_6_kdr} &8| &7Abates: &a{top_arena_6_kills}"
+        actions: []
+
+      top7:
+        slot: 32
+        material: "PAPER"
+        name: "&e#7 &f{top_arena_7_name}"
+        lore:
+          - "&7KDR: &e{top_arena_7_kdr} &8| &7Abates: &a{top_arena_7_kills}"
+        actions: []
+
+      top8:
+        slot: 33
+        material: "PAPER"
+        name: "&e#8 &f{top_arena_8_name}"
+        lore:
+          - "&7KDR: &e{top_arena_8_kdr} &8| &7Abates: &a{top_arena_8_kills}"
+        actions: []
+
+      top9:
+        slot: 38
+        material: "PAPER"
+        name: "&e#9 &f{top_arena_9_name}"
+        lore:
+          - "&7KDR: &e{top_arena_9_kdr} &8| &7Abates: &a{top_arena_9_kills}"
+        actions: []
+
+      top10:
+        slot: 42
+        material: "PAPER"
+        name: "&e#10 &f{top_arena_10_name}"
+        lore:
+          - "&7KDR: &e{top_arena_10_kdr} &8| &7Abates: &a{top_arena_10_kills}"
+        actions: []
+
+      your-stats:
+        slot: 49
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lSUAS ESTATÍSTICAS"
+        lore:
+          - ""
+          - "&7Seus abates: &a%pvpstats_kills%"
+          - "&7Suas mortes: &c%pvpstats_deaths%"
+          - "&7Seu KDR: &e%pvpstats_kdr%"
+          - ""
+        actions: []
+
+      close:
+        slot: 53
+        material: "BARRIER"
+        name: "&c&lFECHAR"
+        lore:
+          - "&7Clique para fechar"
+        actions:
+          - "[CLOSE]"
+
+  en_US:
+    title: "&c&lARENA RANKING &8(KDR)"
+    size: 54
+    update-interval: 40
+
+    items:
+      toggle-kdr:
+        slot: 4
+        material: "DIAMOND_SWORD"
+        name: "&e&lTOGGLE RANKING"
+        lore:
+          - ""
+          - "&7Click to toggle between:"
+          - "&7► Kills"
+          - "&a► KDR"
+          - ""
+        actions:
+          - "[MENU] arena-ranking"
+
+      top1:
+        slot: 13
+        material: "SKULL_ITEM:3:{top_arena_1_name}"
+        name: "&6&l#1 &f{top_arena_1_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_1_kdr}"
+          - "&7Kills: &a{top_arena_1_kills}"
+          - "&7Deaths: &c{top_arena_1_deaths}"
+          - ""
+        actions: []
+
+      top2:
+        slot: 21
+        material: "SKULL_ITEM:3:{top_arena_2_name}"
+        name: "&7&l#2 &f{top_arena_2_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_2_kdr}"
+          - "&7Kills: &a{top_arena_2_kills}"
+          - "&7Deaths: &c{top_arena_2_deaths}"
+          - ""
+        actions: []
+
+      top3:
+        slot: 23
+        material: "SKULL_ITEM:3:{top_arena_3_name}"
+        name: "&c&l#3 &f{top_arena_3_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_arena_3_kdr}"
+          - "&7Kills: &a{top_arena_3_kills}"
+          - "&7Deaths: &c{top_arena_3_deaths}"
+          - ""
+        actions: []
+
+      top4:
+        slot: 29
+        material: "PAPER"
+        name: "&e#4 &f{top_arena_4_name}"
+        lore:
+          - "&7KDR: &e{top_arena_4_kdr} &8| &7Kills: &a{top_arena_4_kills}"
+        actions: []
+
+      top5:
+        slot: 30
+        material: "PAPER"
+        name: "&e#5 &f{top_arena_5_name}"
+        lore:
+          - "&7KDR: &e{top_arena_5_kdr} &8| &7Kills: &a{top_arena_5_kills}"
+        actions: []
+
+      top6:
+        slot: 31
+        material: "PAPER"
+        name: "&e#6 &f{top_arena_6_name}"
+        lore:
+          - "&7KDR: &e{top_arena_6_kdr} &8| &7Kills: &a{top_arena_6_kills}"
+        actions: []
+
+      top7:
+        slot: 32
+        material: "PAPER"
+        name: "&e#7 &f{top_arena_7_name}"
+        lore:
+          - "&7KDR: &e{top_arena_7_kdr} &8| &7Kills: &a{top_arena_7_kills}"
+        actions: []
+
+      top8:
+        slot: 33
+        material: "PAPER"
+        name: "&e#8 &f{top_arena_8_name}"
+        lore:
+          - "&7KDR: &e{top_arena_8_kdr} &8| &7Kills: &a{top_arena_8_kills}"
+        actions: []
+
+      top9:
+        slot: 38
+        material: "PAPER"
+        name: "&e#9 &f{top_arena_9_name}"
+        lore:
+          - "&7KDR: &e{top_arena_9_kdr} &8| &7Kills: &a{top_arena_9_kills}"
+        actions: []
+
+      top10:
+        slot: 42
+        material: "PAPER"
+        name: "&e#10 &f{top_arena_10_name}"
+        lore:
+          - "&7KDR: &e{top_arena_10_kdr} &8| &7Kills: &a{top_arena_10_kills}"
+        actions: []
+
+      your-stats:
+        slot: 49
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lYOUR STATS"
+        lore:
+          - ""
+          - "&7Your kills: &a%pvpstats_kills%"
+          - "&7Your deaths: &c%pvpstats_deaths%"
+          - "&7Your KDR: &e%pvpstats_kdr%"
+          - ""
+        actions: []
+
+      close:
+        slot: 53
+        material: "BARRIER"
+        name: "&c&lCLOSE"
+        lore:
+          - "&7Click to close"
+        actions:
+          - "[CLOSE]"

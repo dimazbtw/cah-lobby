@@ -1,0 +1,82 @@
+menu:
+  # Menu em Português
+  pt_PT:
+    title: "&6&lMODOS DE JOGO"
+    size: 27  # 9, 18, 27, 36, 45 ou 54
+    update-interval: 20  # Ticks (20 = 1 segundo, 0 = sem atualização)
+
+    items:
+      rankup:
+        slot: 11
+        material: "DIAMOND"  # Pode ser: ID, NOME, ou URL de textura
+        name: "&a&lRANKUP"
+        lore:
+          - "&7Mine, evolua e domine!"
+          - ""
+          - "&7Jogadores: &f%server_online_rankup%"  # PlaceholderAPI
+          - "&7Seu rank: &f{player}"  # Placeholder interno
+          - ""
+          - "&eClique para conectar!"
+        actions:
+          - "[SERVER] rankup"  # Conecta ao servidor "rankup"
+          - "[MESSAGE] &aConectando ao RankUP..."
+
+      bedwars:
+        slot: 13
+        material: "BED"
+        name: "&c&lBEDWARS"
+        lore:
+          - "&7Proteja sua cama e destrua"
+          - "&7a dos seus inimigos!"
+          - ""
+          - "&7Jogadores: &f%server_online_bedwars%"
+          - ""
+          - "&eClique para conectar!"
+        actions:
+          - "[SERVER] bedwars"
+
+      pvp:
+        slot: 15
+        material: "DIAMOND_SWORD"
+        name: "&4&lPVP"
+        lore:
+          - "&7Lute contra outros jogadores!"
+          - ""
+          - "&7Suas kills: &f{pvp_kills}"
+          - "&7Seu KDR: &f{pvp_kdr}"
+          - ""
+          - "&eClique para entrar!"
+        actions:
+          - "[CLOSE]"  # Fecha o menu
+          - "[PLAYER] pvp"  # Executa comando /pvp
+
+      close:
+        slot: 22
+        material: "BARRIER"
+        name: "&c&lFECHAR"
+        lore:
+          - "&7Clique para fechar o menu"
+        actions:
+          - "[CLOSE]"
+
+  # Menu em Inglês
+  en_US:
+    title: "&6&lGAME MODES"
+    size: 27
+    update-interval: 20
+
+    items:
+      rankup:
+        slot: 11
+        material: "DIAMOND"
+        name: "&a&lRANKUP"
+        lore:
+          - "&7Mine, evolve and dominate!"
+          - ""
+          - "&7Players: &f%server_online_rankup%"
+          - ""
+          - "&eClick to connect!"
+        actions:
+          - "[SERVER] rankup"
+
+      # ... outros itens traduzidos ...

@@ -2,6 +2,7 @@ package github.dimazbtw.lobby.listeners;
 
 import github.dimazbtw.lobby.Main;
 import github.dimazbtw.lobby.managers.PvPManager;
+import github.dimazbtw.lobby.managers.X1Manager;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,6 +16,9 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProtectionListener implements Listener {
 
@@ -69,20 +73,30 @@ public class ProtectionListener implements Listener {
 
         Player player = (Player) event.getEntity();
         PvPManager pvpManager = plugin.getPvPManager();
+        X1Manager x1Manager = plugin.getX1Manager();
 
-        // PRIORIDADE 1: Se o jogador estiver no modo PvP, SEMPRE permitir dano
+        // PRIORIDADE 1: Se o jogador estiver em X1 e pode receber dano
+        if (x1Manager.isInX1(player)) {
+            if (x1Manager.canTakeDamage(player)) {
+                return; // Permite dano
+            } else {
+                event.setCancelled(true); // Countdown, não permite dano
+                return;
+            }
+        }
+
+        // PRIORIDADE 2: Se o jogador estiver no modo PvP, SEMPRE permitir dano
         if (pvpManager != null && pvpManager.isPvPEnabled(player)) {
             return; // Permite QUALQUER dano (queda, fogo, combate, etc.)
         }
 
-        // PRIORIDADE 2: Se NÃO estiver em PvP e a proteção global estiver ativa
+        // PRIORIDADE 3: Se NÃO estiver em PvP/X1 e a proteção global estiver ativa
         if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
             event.setCancelled(true);
             player.setHealth(player.getMaxHealth());
             player.setFireTicks(0);
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -108,6 +122,38 @@ public class ProtectionListener implements Listener {
         }
 
         PvPManager pvpManager = plugin.getPvPManager();
+        X1Manager x1Manager = plugin.getX1Manager();
+
+        // ========== VERIFICAR X1 PRIMEIRO ==========
+        if (attacker != null) {
+            boolean victimInX1 = x1Manager.isInX1(victim);
+            boolean attackerInX1 = x1Manager.isInX1(attacker);
+
+            // Se AMBOS estão em X1
+            if (victimInX1 && attackerInX1) {
+                // Verificar se estão na MESMA partida
+                X1Manager.X1Match victimMatch = x1Manager.getMatch(victim);
+                X1Manager.X1Match attackerMatch = x1Manager.getMatch(attacker);
+
+                if (victimMatch == attackerMatch) {
+                    // Mesma partida - verificar se pode receber dano
+                    if (x1Manager.canTakeDamage(victim)) {
+                        return; // Permite PvP
+                    } else {
+                        event.setCancelled(true); // Countdown
+                        return;
+                    }
+                }
+            }
+
+            // Se apenas um está em X1, cancelar
+            if (victimInX1 || attackerInX1) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        // ========== VERIFICAR PVP ARENA ==========
 
         // Se o atacante não é um jogador (mob/ambiente)
         if (attacker == null) {
@@ -124,7 +170,6 @@ public class ProtectionListener implements Listener {
 
         // A partir daqui, o atacante É um jogador
         if (pvpManager == null) {
-            // Se o PvPManager não existe, aplicar proteção global
             if (plugin.getConfig().getBoolean("protection.disable-damage", true)) {
                 event.setCancelled(true);
             }
@@ -134,9 +179,27 @@ public class ProtectionListener implements Listener {
         boolean attackerPvP = pvpManager.isPvPEnabled(attacker);
         boolean victimPvP = pvpManager.isPvPEnabled(victim);
 
-        // PRIORIDADE MÁXIMA: Se AMBOS estiverem em modo PvP, SEMPRE permitir
+        // Se AMBOS estiverem em modo PvP
         if (attackerPvP && victimPvP) {
-            return; // Permite PvP INCONDICIONALMENTE
+            // Verificar proteção de spawn da vítima
+            if (pvpManager.hasSpawnProtection(victim)) {
+                event.setCancelled(true);
+
+                // Informar o atacante
+                long timeLeft = pvpManager.getRemainingProtectionTime(victim) / 1000;
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("player", victim.getName());
+                placeholders.put("time", String.valueOf(timeLeft));
+                plugin.getLanguageManager().sendMessage(attacker, "pvp.target-protected", placeholders);
+                return;
+            }
+
+            // Remover proteção do atacante ao atacar
+            if (pvpManager.hasSpawnProtection(attacker)) {
+                pvpManager.removeSpawnProtection(attacker);
+            }
+
+            return; // Permite PvP
         }
 
         // Se algum dos dois não estiver com PvP ativo, cancelar o dano
@@ -150,7 +213,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onWeatherChange(WeatherChangeEvent event) {
-        // Desativar mudança de clima
         if (plugin.getConfig().getBoolean("protection.disable-weather-change", true)) {
             if (event.toWeatherState()) {
                 event.setCancelled(true);
@@ -160,9 +222,7 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        // Desativar spawn de entidades
         if (plugin.getConfig().getBoolean("protection.disable-mob-spawn", true)) {
-            // Permitir spawns customizados e de plugins
             if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM &&
                     event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
                 event.setCancelled(true);
@@ -172,7 +232,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
-        // Desativar ignição de blocos
         if (plugin.getConfig().getBoolean("protection.disable-fire-spread", true)) {
             event.setCancelled(true);
         }
@@ -180,7 +239,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
-        // Desativar blocos queimando
         if (plugin.getConfig().getBoolean("protection.disable-fire-spread", true)) {
             event.setCancelled(true);
         }
@@ -188,7 +246,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent event) {
-        // Desativar fogo se espalhando
         if (plugin.getConfig().getBoolean("protection.disable-fire-spread", true)) {
             if (event.getSource().getType().toString().contains("FIRE")) {
                 event.setCancelled(true);
@@ -198,7 +255,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-        // Desativar dano de explosões
         if (plugin.getConfig().getBoolean("protection.disable-explosion-damage", true)) {
             event.blockList().clear();
         }
@@ -206,7 +262,6 @@ public class ProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
-        // Desativar explosões
         if (plugin.getConfig().getBoolean("protection.disable-explosion-damage", true)) {
             event.setCancelled(true);
         }

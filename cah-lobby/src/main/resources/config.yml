@@ -171,13 +171,14 @@ chat:
       - "miguel"
     replacement: "*******"
 
-  # Bloquear palavrões
-  anti-swear:
-    enabled: false
-    words:
-      - "palavra1"
-      - "palavra2"
-    replacement: "***"
+tell:
+  format:
+    sender: "&7[&c✉&7] %luckperms_prefix%{target} &8» &f{message}"
+    receiver: "&7[&a✉&7] %luckperms_prefix%{sender} &8» &f{message}"
+  sound:
+    enabled: true
+    sound: "ORB_PICKUP"
+  log-messages: true
 
 # ==========================================
 #     Configurações de Spawn

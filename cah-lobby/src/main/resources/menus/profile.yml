@@ -1,0 +1,89 @@
+menu:
+  # Menu em Português
+  pt_PT:
+    title: "&8Perfil"
+    size: 27  # 9, 18, 27, 36, 45 ou 54
+    update-interval: 20  # Ticks (20 = 1 segundo, 0 = sem atualização)
+
+    items:
+      idiomas:
+        slot: 11
+        material: "b1dd4fe4a429abd665dfdb3e21321d6efa6a6b5e7b956db9c5d59c9efab25"  # Pode ser: ID, NOME, ou URL de textura
+        name: "&aIdiomas"
+        lore:
+          - ""  # PlaceholderAPI
+          - "&fIdiomas disponíveis:"
+          - "&7 Português (PT)"
+          - "&7 Inglês (US)"
+          - ""
+          - "&eClica para abrir!"
+        actions:
+          - "[SERVER] rankup"  # Conecta ao servidor "rankup"
+          - "[MESSAGE] &aConectando ao RankUP..."
+
+      preferencias:
+        slot: 13
+        material: "404"
+        name: "&aPreferências"
+        lore:
+          - "&7Configura o teu jogo da"
+          - "&7maneira que preferes!"
+          - ""
+          - "&eClica para abrir!"
+        actions:
+          - "[SERVER] bedwars"
+
+      sociais:
+        slot: 15
+        material: "3685a0be743e9067de95cd8c6d1ba21ab21d37371b3d597211bb75e43279"
+        name: "&aRedes Sociais"
+        lore:
+          - "&7Segue-nos e fica por dentro"
+          - "&7de todas as novidades e eventos."
+          - ""
+          - "&eClica para abrir!"
+        actions:
+
+  # Menu em Inglês
+  en_US:
+    title: "&6&lGAME MODES"
+    size: 27
+    update-interval: 20
+
+    items:
+      idiomas:
+        slot: 11
+        material: "b1dd4fe4a429abd665dfdb3e21321d6efa6a6b5e7b956db9c5d59c9efab25"
+        name: "&aLanguages"
+        lore:
+          - ""
+          - "&fAvailable languages:"
+          - "&7 Portuguese (PT)"
+          - "&7 English (US)"
+          - ""
+          - "&eClick to open!"
+        actions:
+          - "[SERVER] rankup"
+
+      preferencias:
+        slot: 13
+        material: "404"
+        name: "&aPreferences"
+        lore:
+          - "&7Configure your game"
+          - "&7the way you prefer!"
+          - ""
+          - "&eClick to open!"
+        actions:
+          - "[SERVER] bedwars"
+
+      sociais:
+        slot: 15
+        material: "3685a0be743e9067de95cd8c6d1ba21ab21d37371b3d597211bb75e43279"
+        name: "&aSocial Networks"
+        lore:
+          - "&7Follow us and stay updated"
+          - "&7on all news and events."
+          - ""
+          - "&eClick to open!"
+        actions:

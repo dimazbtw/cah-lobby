@@ -2,6 +2,7 @@
 
 package github.dimazbtw.lobby;
 
+import github.dimazbtw.lobby.commands.CombatCommands;
 import github.dimazbtw.lobby.commands.LobbyCommand;
 import github.dimazbtw.lobby.commands.registry.CommandRegistry;
 import github.dimazbtw.lobby.config.LanguageManager;
@@ -30,10 +31,14 @@ public final class Main extends JavaPlugin {
     private LobbyCommand lobbyCommand;
     private NPCManager npcManager;
     private PvPManager pvPManager;
+    private X1Manager x1Manager;
     private Database statsDatabase; // ADICIONE ESTA LINHA
     private PacketAS packetAS;
     private MenuManager menuManager;
     private TellManager tellManager;
+    private CombatCommands combatCommands;
+    private ParkourManager parkourManager;
+
 
     @Override
     public void onEnable() {
@@ -77,6 +82,9 @@ public final class Main extends JavaPlugin {
         scoreboardManager = new ScoreboardManager(this);
         scoreboardManager.startUpdateTask();
 
+        getLogger().info("Inicializando ParkourManager...");
+        parkourManager = new ParkourManager(this);
+
         // Inicializar TabManager
         getLogger().info("Inicializando TabManager...");
         tabManager = new TabManager(this);
@@ -85,6 +93,9 @@ public final class Main extends JavaPlugin {
         // Inicializar LobbyCommand
         getLogger().info("Inicializando LobbyCommand...");
         lobbyCommand = new LobbyCommand(this);
+
+        getLogger().info("Inicializando CombatCommands...");
+        combatCommands = new CombatCommands(this);
 
         // Inicializar WorldManager
         getLogger().info("Inicializando WorldManager...");
@@ -96,6 +107,9 @@ public final class Main extends JavaPlugin {
 
         getLogger().info("Inicializando PvPManager...");
         pvPManager = new PvPManager(this);
+
+        getLogger().info("Inicializando X1Manager...");
+        x1Manager = new X1Manager(this);
 
         getLogger().info("Inicializando MenuManager...");
         menuManager = new MenuManager(this);
@@ -166,5 +180,6 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PvPListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PvPVisibilityListener(this), this);
         Bukkit.getPluginManager().registerEvents(new MenuListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new ParkourListener(this), this);
     }
 }

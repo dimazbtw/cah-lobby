@@ -1,6 +1,7 @@
 package github.dimazbtw.lobby.listeners;
 
 import github.dimazbtw.lobby.Main;
+import github.dimazbtw.lobby.managers.X1Manager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,7 +30,12 @@ public class PvPListener implements Listener {
         Player attacker = (Player) event.getDamager();
         Player victim = (Player) event.getEntity();
 
-        // Verificar se ambos estão em modo PvP
+        // Se estão em X1, não marcar combat tag (X1 tem sua própria lógica)
+        if (plugin.getX1Manager().isInX1(attacker) && plugin.getX1Manager().isInX1(victim)) {
+            return;
+        }
+
+        // Verificar se ambos estão em modo PvP (Arena)
         if (!plugin.getPvPManager().isPvPEnabled(attacker) || !plugin.getPvPManager().isPvPEnabled(victim)) {
             return;
         }
@@ -47,7 +53,25 @@ public class PvPListener implements Listener {
         Player victim = event.getEntity();
         Player killer = victim.getKiller();
 
-        // Se a vítima não está em modo PvP, ignorar
+        // ========== VERIFICAR X1 PRIMEIRO ==========
+        X1Manager x1Manager = plugin.getX1Manager();
+        if (x1Manager.isInX1(victim)) {
+            // Limpar drops
+            event.getDrops().clear();
+            event.setDroppedExp(0);
+            event.setDeathMessage(null);
+
+            // Processar kill do X1
+            if (killer != null && x1Manager.isInX1(killer)) {
+                x1Manager.handleKill(killer, victim);
+            } else {
+                // Morreu por outro motivo (queda, etc) - oponente ganha
+                x1Manager.forfeitMatch(victim);
+            }
+            return;
+        }
+
+        // ========== VERIFICAR PVP ARENA ==========
         if (!plugin.getPvPManager().isPvPEnabled(victim)) {
             return;
         }
@@ -78,7 +102,7 @@ public class PvPListener implements Listener {
             event.setDeathMessage(deathMessage);
         }
 
-        // DESATIVAR PvP da vítima (isso limpará inventário, combat tag e removerá da lista)
+        // DESATIVAR PvP da vítima
         plugin.getPvPManager().forceDisablePvP(victim);
     }
 
@@ -110,7 +134,7 @@ public class PvPListener implements Listener {
                 player.setSaturation(20F);
                 player.setFireTicks(0);
 
-                // Atualizar visibilidade (o jogador saiu do PvP ao morrer)
+                // Atualizar visibilidade
                 plugin.getPvPManager().updatePlayerVisibility(player);
             }
         }, 1L);

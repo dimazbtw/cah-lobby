@@ -65,6 +65,13 @@ public class LobbyAPI {
         return plugin.getLanguageManager().getPlayerLanguage(player);
     }
 
+    public static void giveJoinItems(Player player) {
+        if (!isAvailable() || player == null) {
+            return;
+        }
+        plugin.getJoinItemsManager().giveJoinItems(player);
+    }
+
     /**
      * Define o idioma de um jogador
      *

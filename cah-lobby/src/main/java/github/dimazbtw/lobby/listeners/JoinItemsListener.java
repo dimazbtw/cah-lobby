@@ -83,14 +83,12 @@ public class JoinItemsListener implements Listener {
             }
         }
 
-        // Slot 4 - PvP (CHEST)
+        // Slot 4 - PvP (DIAMOND_SWORD) - Abre o menu de PvP
         if (item.getType() == Material.DIAMOND_SWORD) {
             String pvpName = plugin.getLanguageManager().getMessage(playerLang, "join-items.pvp.name");
             if (itemName.equals(pvpName.replace("&", "§"))) {
                 event.setCancelled(true);
-
-                // Ativar modo PvP
-                plugin.getPvPManager().enablePvP(player);
+                plugin.getMenuManager().openMenu(player, "pvp-menu");
                 return;
             }
         }

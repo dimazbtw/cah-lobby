@@ -199,3 +199,121 @@ hologram:
   list-footer: "&7Total: &f{count}&7 hologram(s)"
   teleported: "&aYou were teleported to hologram &f{name}&a!"
   moved: "&aHologram &f{name}&a moved to your location!"
+
+# PvP Statistics
+stats:
+  header: "&6&m------------------------------"
+  title: "&6Statistics of &f{player}"
+  kills: "&eKills: &f{kills}"
+  deaths: "&eDeaths: &f{deaths}"
+  kdr: "&eKDR: &f{kdr}"
+  highest-streak: "&eHighest Streak: &f{streak}"
+  kills-rank: "&eRanking (Kills): &f#{kills_position}"
+  kdr-rank: "&eRanking (KDR): &f#{kdr_position}"
+  footer: "&6&m------------------------------"
+
+# Ranking System
+ranking:
+  invalid-type: "&cInvalid type! Use: &fkills&c, &fkdr&c or &fstreak"
+  empty: "&cNo ranking data yet!"
+  footer: "&6&m------------------------------"
+
+  # Kills Ranking
+  kills-header: "&6&m------------------------------\n&6&lTOP 10 - KILLS\n&6&m------------------------------"
+  kills-line: "{position} &f{player} &7- &e{kills} kills &7(KDR: &f{kdr}&7)"
+
+  # KDR Ranking
+  kdr-header: "&6&m------------------------------\n&6&lTOP 10 - KDR\n&6&m------------------------------"
+  kdr-line: "{position} &f{player} &7- &eKDR: {kdr} &7({kills}/{deaths})"
+
+  # Streak Ranking
+  streak-header: "&6&m------------------------------\n&6&lTOP 10 - KILLSTREAK\n&6&m------------------------------"
+  streak-line: "{position} &f{player} &7- &e{streak} streak &7({kills} kills)"
+
+# Preferences
+preferences:
+  enabled: "&aEnabled"
+  disabled: "&cDisabled"
+  status-enabled: "&aStatus: &fEnabled ✔"
+  status-disabled: "&cStatus: &fDisabled ✖"
+
+  chat-toggled: "&aChat {state}&a!"
+  pm-toggled: "&aPrivate messages {state}&a!"
+  fly-toggled: "&aFly mode {state}&a!"
+
+  chat-self-disabled: "&cYou have disabled chat in your preferences!"
+  pm-self-disabled: "&cYou have disabled private messages in your preferences!"
+
+# Tell/Private Messages System
+tell:
+  usage: "&cUsage: /tell <player> <message>"
+  reply-usage: "&cUsage: /reply <message>"
+  target-not-found: "&cPlayer &f{player}&c not found or offline!"
+  target-offline: "&cThe player is offline!"
+  target-disabled: "&f{player}&c has disabled private messages!"
+  self-disabled: "&cYou have disabled private messages in your preferences!"
+  self-message: "&cYou cannot send a message to yourself!"
+  no-previous: "&cYou don't have any recent conversations!"
+
+# Add to en_US.yml file
+
+# ==================== ARENA ====================
+arena:
+  joined: "&a&lARENA! &7You joined the FFA arena. Good luck!"
+  no-spawn: "&cThe arena spawn has not been set yet!"
+  spawn-set: "&aArena spawn set at &fx: {x} y: {y} z: {z}"
+
+# ==================== X1 ====================
+x1:
+  help:
+    header: "&6&m------------------------------"
+    footer: "&6&m------------------------------"
+
+  # Invites
+  invite-sent: "&aX1 invite sent to &f{player}&a!"
+  invite-received: "&e&l[X1] &f{player} &einvited you to a X1!"
+  already-invited: "&cYou already invited this player!"
+  no-invite: "&cYou have no pending X1 invites!"
+  inviter-offline: "&cThe player who invited you left the server!"
+  invite-denied: "&cYou denied the X1 invite."
+  invite-denied-other: "&c{player} denied your X1 invite."
+  invite-expired: "&cThe X1 invite expired!"
+  invite-expired-sender: "&cYour X1 invite expired!"
+
+  # Queue
+  joined-queue: "&a&lX1 QUEUE! &7You joined the queue. Position: &e#{position}"
+  left-queue: "&cYou left the X1 queue."
+  already-in-queue: "&cYou are already in the queue!"
+
+  # Validations
+  self-invite: "&cYou can't invite yourself!"
+  target-in-match: "&cThis player is already in a match!"
+  target-in-pvp: "&cThis player is in PvP mode!"
+  already-in-match: "&cYou are already in a match!"
+  not-in-match: "&cYou are not in a X1 match!"
+  in-pvp: "&cYou are in PvP mode! Leave first with /sair"
+  no-positions: "&cX1 positions have not been set yet!"
+  invalid-position: "&cInvalid position! Use: pos1 or pos2"
+  position-set: "&aPosition &f{position} &aset at &fx: {x} y: {y} z: {z}"
+
+  # Match
+  match-started: "&5&l[X1] &fMatch started against &e{opponent}&f!"
+  you-won: "&a&lVICTORY! &7You won the X1 against &c{loser}&7!"
+  you-lost: "&c&lDEFEAT! &7You lost the X1 to &a{winner}&7!"
+  match-result: "&5&l[X1] &a{winner} &7won the X1 against &c{loser}&7!"
+
+# ==================== PVP (additional) ====================
+pvp:
+  enabled: "&a&lPvP Enabled! &7You can now fight other players."
+  disabled: "&c&lPvP Disabled! &7Your streak was &e{streak} &7kills."
+  already-enabled: "&c&lPvP is already enabled!"
+  kill: "&a&l+1 Kill! &7You killed &c{victim}&7. Streak: &e{streak}"
+  death: "&c&lYou died! &7Killed by &c{killer}&7. Your streak was &e{streak}"
+  death-broadcast: "&c☠ &f{victim} &7was killed by &c{killer} &7[Streak: &e{streak}&7]"
+  death-environment: "&c☠ &f{victim} &7died to the environment"
+  target-not-in-pvp: "&cThis player is not in PvP mode!"
+  respawn: "&aYou respawned with a new kit!"
+  apple-received: "&6+1 Golden Apple! &7Keep eliminating!"
+  combat-tag: "&c&lIN COMBAT! &7Wait &e{time}s &7to leave."
+  combat-start: "&c&lCOMBAT! &7You are in combat. Don't disconnect!"
+  combat-end: "&a&lCombat ended! &7You can leave now."

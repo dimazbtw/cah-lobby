@@ -20,28 +20,18 @@ public class Database {
         createTables();
     }
 
-    /**
-     * Conecta ao banco de dados SQLite
-     */
     private void connect() {
         try {
-            if (connection != null && !connection.isClosed()) {
-                return;
-            }
-
+            if (connection != null && !connection.isClosed()) return;
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());
             plugin.getLogger().info("Conectado ao banco de dados SQLite!");
-
         } catch (ClassNotFoundException | SQLException e) {
             plugin.getLogger().severe("Erro ao conectar ao banco de dados!");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Cria as tabelas necessárias
-     */
     private void createTables() {
         String createPvPStatsTable = "CREATE TABLE IF NOT EXISTS pvp_stats (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
@@ -52,8 +42,17 @@ public class Database {
                 "last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 
+        String createX1StatsTable = "CREATE TABLE IF NOT EXISTS x1_stats (" +
+                "uuid VARCHAR(36) PRIMARY KEY," +
+                "player_name VARCHAR(16) NOT NULL," +
+                "wins INTEGER DEFAULT 0," +
+                "losses INTEGER DEFAULT 0," +
+                "last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createPvPStatsTable);
+            stmt.execute(createX1StatsTable);
             plugin.getLogger().info("Tabelas do banco de dados criadas/verificadas!");
         } catch (SQLException e) {
             plugin.getLogger().severe("Erro ao criar tabelas!");
@@ -61,29 +60,19 @@ public class Database {
         }
     }
 
-    /**
-     * Carrega as estatísticas de um jogador
-     */
+    // ==================== PVP STATS ====================
+
     public PvPStats loadStats(Player player) {
         String query = "SELECT * FROM pvp_stats WHERE uuid = ?";
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, player.getUniqueId().toString());
-
             ResultSet rs = stmt.executeQuery();
-
             if (rs.next()) {
-                return new PvPStats(
-                        rs.getInt("kills"),
-                        rs.getInt("deaths"),
-                        rs.getInt("highest_streak")
-                );
+                return new PvPStats(rs.getInt("kills"), rs.getInt("deaths"), rs.getInt("highest_streak"));
             } else {
-                // Jogador novo, criar estatísticas zeradas
                 createStats(player);
                 return new PvPStats(0, 0, 0);
             }
-
         } catch (SQLException e) {
             plugin.getLogger().severe("Erro ao carregar estatísticas de " + player.getName());
             e.printStackTrace();
@@ -91,28 +80,19 @@ public class Database {
         }
     }
 
-    /**
-     * Cria estatísticas para um jogador novo
-     */
     private void createStats(Player player) {
-        String insert = "INSERT INTO pvp_stats (uuid, player_name, kills, deaths, highest_streak) VALUES (?, ?, 0, 0, 0)";
-
+        String insert = "INSERT OR IGNORE INTO pvp_stats (uuid, player_name) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(insert)) {
             stmt.setString(1, player.getUniqueId().toString());
             stmt.setString(2, player.getName());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao criar estatísticas para " + player.getName());
             e.printStackTrace();
         }
     }
 
-    /**
-     * Salva as estatísticas de um jogador
-     */
     public void saveStats(Player player, PvPStats stats) {
         String update = "UPDATE pvp_stats SET player_name = ?, kills = ?, deaths = ?, highest_streak = ?, last_updated = CURRENT_TIMESTAMP WHERE uuid = ?";
-
         try (PreparedStatement stmt = connection.prepareStatement(update)) {
             stmt.setString(1, player.getName());
             stmt.setInt(2, stats.getKills());
@@ -121,194 +101,175 @@ public class Database {
             stmt.setString(5, player.getUniqueId().toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao salvar estatísticas de " + player.getName());
             e.printStackTrace();
         }
     }
 
-    /**
-     * Adiciona uma kill ao jogador
-     */
     public void addKill(Player player, int currentStreak) {
         PvPStats stats = loadStats(player);
         stats.addKill();
-
-        // Atualizar highest streak se necessário
-        if (currentStreak > stats.getHighestStreak()) {
-            stats.setHighestStreak(currentStreak);
-        }
-
+        if (currentStreak > stats.getHighestStreak()) stats.setHighestStreak(currentStreak);
         saveStats(player, stats);
     }
 
-    /**
-     * Adiciona uma morte ao jogador
-     */
     public void addDeath(Player player) {
         PvPStats stats = loadStats(player);
         stats.addDeath();
         saveStats(player, stats);
     }
 
-    /**
-     * Obtém o ranking de kills (Top 10)
-     */
     public List<RankingEntry> getTopKills(int limit) {
         String query = "SELECT player_name, kills, deaths FROM pvp_stats ORDER BY kills DESC LIMIT ?";
         List<RankingEntry> ranking = new ArrayList<>();
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, limit);
             ResultSet rs = stmt.executeQuery();
-
-            int position = 1;
+            int pos = 1;
             while (rs.next()) {
-                ranking.add(new RankingEntry(
-                        position++,
-                        rs.getString("player_name"),
-                        rs.getInt("kills"),
-                        rs.getInt("deaths")
-                ));
+                ranking.add(new RankingEntry(pos++, rs.getString("player_name"), rs.getInt("kills"), rs.getInt("deaths")));
             }
-
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao obter ranking de kills!");
-            e.printStackTrace();
-        }
-
+        } catch (SQLException e) { e.printStackTrace(); }
         return ranking;
     }
 
-    /**
-     * Obtém o ranking de KDR (Top 10)
-     */
     public List<RankingEntry> getTopKDR(int limit) {
         String query = "SELECT player_name, kills, deaths FROM pvp_stats WHERE deaths > 0 ORDER BY (CAST(kills AS REAL) / deaths) DESC LIMIT ?";
         List<RankingEntry> ranking = new ArrayList<>();
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, limit);
             ResultSet rs = stmt.executeQuery();
-
-            int position = 1;
+            int pos = 1;
             while (rs.next()) {
-                ranking.add(new RankingEntry(
-                        position++,
-                        rs.getString("player_name"),
-                        rs.getInt("kills"),
-                        rs.getInt("deaths")
-                ));
+                ranking.add(new RankingEntry(pos++, rs.getString("player_name"), rs.getInt("kills"), rs.getInt("deaths")));
             }
-
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao obter ranking de KDR!");
-            e.printStackTrace();
-        }
-
+        } catch (SQLException e) { e.printStackTrace(); }
         return ranking;
     }
 
-    /**
-     * Obtém o ranking de killstreak (Top 10)
-     */
     public List<RankingEntry> getTopStreak(int limit) {
         String query = "SELECT player_name, kills, deaths, highest_streak FROM pvp_stats ORDER BY highest_streak DESC LIMIT ?";
         List<RankingEntry> ranking = new ArrayList<>();
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, limit);
             ResultSet rs = stmt.executeQuery();
-
-            int position = 1;
+            int pos = 1;
             while (rs.next()) {
-                RankingEntry entry = new RankingEntry(
-                        position++,
-                        rs.getString("player_name"),
-                        rs.getInt("kills"),
-                        rs.getInt("deaths")
-                );
+                RankingEntry entry = new RankingEntry(pos++, rs.getString("player_name"), rs.getInt("kills"), rs.getInt("deaths"));
                 entry.setStreak(rs.getInt("highest_streak"));
                 ranking.add(entry);
             }
-
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao obter ranking de streak!");
-            e.printStackTrace();
-        }
-
+        } catch (SQLException e) { e.printStackTrace(); }
         return ranking;
     }
 
-    /**
-     * Obtém a posição do jogador no ranking de kills
-     */
     public int getPlayerKillsPosition(Player player) {
         String query = "SELECT COUNT(*) + 1 as position FROM pvp_stats WHERE kills > (SELECT kills FROM pvp_stats WHERE uuid = ?)";
-
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, player.getUniqueId().toString());
             ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("position");
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao obter posição de " + player.getName());
-            e.printStackTrace();
-        }
-
+            if (rs.next()) return rs.getInt("position");
+        } catch (SQLException e) { e.printStackTrace(); }
         return -1;
     }
 
-    /**
-     * Obtém a posição do jogador no ranking de KDR
-     */
     public int getPlayerKDRPosition(Player player) {
-        String query = "SELECT COUNT(*) + 1 as position FROM pvp_stats " +
-                "WHERE deaths > 0 AND (CAST(kills AS REAL) / deaths) > " +
-                "(SELECT CAST(kills AS REAL) / deaths FROM pvp_stats WHERE uuid = ? AND deaths > 0)";
-
+        String query = "SELECT COUNT(*) + 1 as position FROM pvp_stats WHERE deaths > 0 AND (CAST(kills AS REAL) / deaths) > (SELECT CAST(kills AS REAL) / deaths FROM pvp_stats WHERE uuid = ? AND deaths > 0)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, player.getUniqueId().toString());
             ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("position");
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao obter posição KDR de " + player.getName());
-            e.printStackTrace();
-        }
-
+            if (rs.next()) return rs.getInt("position");
+        } catch (SQLException e) { e.printStackTrace(); }
         return -1;
     }
 
-    /**
-     * Fecha a conexão com o banco de dados
-     */
+    // ==================== X1 STATS ====================
+
+    public X1Stats loadX1Stats(Player player) {
+        String query = "SELECT * FROM x1_stats WHERE uuid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, player.getUniqueId().toString());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new X1Stats(rs.getInt("wins"), rs.getInt("losses"));
+            } else {
+                createX1Stats(player);
+                return new X1Stats(0, 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new X1Stats(0, 0);
+        }
+    }
+
+    private void createX1Stats(Player player) {
+        String insert = "INSERT OR IGNORE INTO x1_stats (uuid, player_name) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insert)) {
+            stmt.setString(1, player.getUniqueId().toString());
+            stmt.setString(2, player.getName());
+            stmt.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void addX1Win(Player player) {
+        createX1Stats(player);
+        String update = "UPDATE x1_stats SET wins = wins + 1, player_name = ?, last_updated = CURRENT_TIMESTAMP WHERE uuid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(update)) {
+            stmt.setString(1, player.getName());
+            stmt.setString(2, player.getUniqueId().toString());
+            stmt.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void addX1Loss(Player player) {
+        createX1Stats(player);
+        String update = "UPDATE x1_stats SET losses = losses + 1, player_name = ?, last_updated = CURRENT_TIMESTAMP WHERE uuid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(update)) {
+            stmt.setString(1, player.getName());
+            stmt.setString(2, player.getUniqueId().toString());
+            stmt.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public List<X1RankingEntry> getTopX1Wins(int limit) {
+        String query = "SELECT player_name, wins, losses FROM x1_stats ORDER BY wins DESC LIMIT ?";
+        List<X1RankingEntry> ranking = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+            int pos = 1;
+            while (rs.next()) {
+                ranking.add(new X1RankingEntry(pos++, rs.getString("player_name"), rs.getInt("wins"), rs.getInt("losses")));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return ranking;
+    }
+
+    public List<X1RankingEntry> getTopX1KDR(int limit) {
+        String query = "SELECT player_name, wins, losses FROM x1_stats WHERE losses > 0 ORDER BY (CAST(wins AS REAL) / losses) DESC LIMIT ?";
+        List<X1RankingEntry> ranking = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+            int pos = 1;
+            while (rs.next()) {
+                ranking.add(new X1RankingEntry(pos++, rs.getString("player_name"), rs.getInt("wins"), rs.getInt("losses")));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return ranking;
+    }
+
     public void close() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 plugin.getLogger().info("Conexão com banco de dados fechada!");
             }
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao fechar conexão com banco de dados!");
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    /**
-     * Reconecta ao banco de dados se a conexão foi perdida
-     */
     public void reconnect() {
         try {
-            if (connection == null || connection.isClosed()) {
-                connect();
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().severe("Erro ao verificar conexão!");
-            e.printStackTrace();
-        }
+            if (connection == null || connection.isClosed()) connect();
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 }

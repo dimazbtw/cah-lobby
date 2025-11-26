@@ -1,0 +1,99 @@
+menu:
+  # Menu em Português
+  pt_PT:
+    title: "&8PvP"
+    size: 27  # 9, 18, 27, 36, 45 ou 54
+    update-interval: 20  # Ticks (20 = 1 segundo, 0 = sem atualização)
+
+    items:
+      stats:
+        slot: 11
+        material: "397:3"  # Pode ser: ID, NOME, ou URL de textura
+          name: "&aEstatisticas"
+          lore:
+            - "&7Confere as tuas estatísticas"
+            - "&7do pvp."
+            - ''
+            - "&8 ▶ &fAbates:&a %pvpstats_kills%"
+            - "&8 ▶ &fMortes:&c %pvpstats_deaths%"
+            - "&8 ▶ &fKDR:&e %pvpstats_kdr%"
+        actions: []
+
+      arena:
+        slot: 14
+        material: "276"
+        name: "&aArena FFA"
+        lore:
+          - "&7Batalha contra outros"
+          - "&7jogadores em uma arena.!"
+          - ""
+          - "&eClica para entrar!"
+        actions:
+          - "[PLAYER] pvp arena"
+
+      1v1:
+        slot: 15
+        material: "369"
+        name: "&aDesafiar X1"
+        lore:
+          - "&7Desafia um jogador para"
+          - "&71 contra 1."
+          - ""
+          - "&eClica para desafiar!"
+        actions:
+          - '[CHALLENGE]'
+      ranking:
+        slot: 12
+        material: "416"
+        name: "&aRanking"
+        lore:
+          - "&7Confere os jogadores no pódio"
+          - "&7de combate."
+          - ""
+          - "&eClica para abrir!"
+        actions:
+
+
+  # Menu em Inglês
+  en_US:
+    title: "&6&lGAME MODES"
+    size: 27
+    update-interval: 20
+
+    items:
+      idiomas:
+        slot: 11
+        material: "b1dd4fe4a429abd665dfdb3e21321d6efa6a6b5e7b956db9c5d59c9efab25"
+        name: "&aLanguages"
+        lore:
+          - ""
+          - "&fAvailable languages:"
+          - "&7 Portuguese (PT)"
+          - "&7 English (US)"
+          - ""
+          - "&eClick to open!"
+        actions:
+          - "[SERVER] rankup"
+
+      preferencias:
+        slot: 13
+        material: "404"
+        name: "&aPreferences"
+        lore:
+          - "&7Configure your game"
+          - "&7the way you prefer!"
+          - ""
+          - "&eClick to open!"
+        actions:
+          - "[SERVER] bedwars"
+
+      sociais:
+        slot: 15
+        material: "3685a0be743e9067de95cd8c6d1ba21ab21d37371b3d597211bb75e43279"
+        name: "&aSocial Networks"
+        lore:
+          - "&7Follow us and stay updated"
+          - "&7on all news and events."
+          - ""
+          - "&eClick to open!"
+        actions:

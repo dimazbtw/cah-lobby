@@ -1,0 +1,102 @@
+# Menu Seletor de Rankings
+menu:
+  pt_PT:
+    title: "&6&lSELECIONAR RANKING"
+    size: 27
+    update-interval: 0
+
+    items:
+      # Ranking Arena
+      arena-ranking:
+        slot: 11
+        material: "IRON_SWORD"
+        name: "&c&lRANKING ARENA"
+        lore:
+          - ""
+          - "&7Veja os melhores jogadores"
+          - "&7da Arena FFA!"
+          - ""
+          - "&7Ordenar por:"
+          - "&a► Abates"
+          - "&e► KDR"
+          - ""
+          - "&eClique para ver!"
+        actions:
+          - "[MENU] arena-ranking"
+
+      # Ranking X1
+      x1-ranking:
+        slot: 15
+        material: "DIAMOND_SWORD"
+        name: "&5&lRANKING X1"
+        lore:
+          - ""
+          - "&7Veja os melhores jogadores"
+          - "&7de X1 do servidor!"
+          - ""
+          - "&7Ordenar por:"
+          - "&a► Vitórias"
+          - "&e► KDR"
+          - ""
+          - "&eClique para ver!"
+        actions:
+          - "[MENU] x1-ranking"
+
+      # Voltar
+      back:
+        slot: 22
+        material: "ARROW"
+        name: "&c&lVOLTAR"
+        lore:
+          - "&7Voltar ao menu de PvP"
+        actions:
+          - "[MENU] pvp-menu"
+
+  en_US:
+    title: "&6&lSELECT RANKING"
+    size: 27
+    update-interval: 0
+
+    items:
+      arena-ranking:
+        slot: 11
+        material: "IRON_SWORD"
+        name: "&c&lARENA RANKING"
+        lore:
+          - ""
+          - "&7See the best players"
+          - "&7of the FFA Arena!"
+          - ""
+          - "&7Sort by:"
+          - "&a► Kills"
+          - "&e► KDR"
+          - ""
+          - "&eClick to view!"
+        actions:
+          - "[MENU] arena-ranking"
+
+      x1-ranking:
+        slot: 15
+        material: "DIAMOND_SWORD"
+        name: "&5&lX1 RANKING"
+        lore:
+          - ""
+          - "&7See the best X1 players"
+          - "&7on the server!"
+          - ""
+          - "&7Sort by:"
+          - "&a► Wins"
+          - "&e► KDR"
+          - ""
+          - "&eClick to view!"
+        actions:
+          - "[MENU] x1-ranking"
+
+      back:
+        slot: 22
+        material: "ARROW"
+        name: "&c&lBACK"
+        lore:
+          - "&7Back to PvP menu"
+        actions:
+          - "[MENU] pvp-menu"

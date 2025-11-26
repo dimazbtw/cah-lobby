@@ -14,8 +14,10 @@ public class PvPManager {
     private final Main plugin;
     private final Set<UUID> pvpPlayers = new HashSet<>();
     private final Map<UUID, Integer> killStreak = new HashMap<>();
-    private final Map<UUID, Long> combatTag = new HashMap<>(); // Timestamp do último combate
-    private static final long COMBAT_TIME = 5000; // 5 segundos em milissegundos
+    private final Map<UUID, Long> combatTag = new HashMap<>();
+    private final Map<UUID, Long> spawnProtection = new HashMap<>();
+    private static final long COMBAT_TIME = 5000; // 5 segundos
+    private static final long SPAWN_PROTECTION_TIME = 3000; // 3 segundos
 
     public PvPManager(Main plugin) {
         this.plugin = plugin;
@@ -66,8 +68,12 @@ public class PvPManager {
         pvpPlayers.add(player.getUniqueId());
         killStreak.put(player.getUniqueId(), 0);
 
+        // Ativar proteção de spawn
+        spawnProtection.put(player.getUniqueId(), System.currentTimeMillis());
+
         // Mensagem de ativação
         plugin.getLanguageManager().sendMessage(player, "pvp.enabled");
+        plugin.getLanguageManager().sendMessage(player, "pvp.spawn-protection");
 
         // Atualizar visibilidade
         updatePlayerVisibility(player);
@@ -99,8 +105,9 @@ public class PvPManager {
         int streak = killStreak.getOrDefault(player.getUniqueId(), 0);
         killStreak.remove(player.getUniqueId());
 
-        // Remover combat tag
+        // Remover combat tag e proteção
         combatTag.remove(player.getUniqueId());
+        spawnProtection.remove(player.getUniqueId());
 
         // Se o jogador está vivo (saiu por comando), dar itens e mensagem
         if (player.isOnline() && player.getHealth() > 0) {
@@ -116,7 +123,6 @@ public class PvPManager {
             placeholders.put("streak", String.valueOf(streak));
             plugin.getLanguageManager().sendMessage(player, "pvp.disabled", placeholders);
         }
-        // Se o jogador está morto, o PvPListener cuidará do respawn e itens
 
         // Atualizar visibilidade
         updatePlayerVisibility(player);
@@ -248,6 +254,7 @@ public class PvPManager {
         pvpPlayers.remove(player.getUniqueId());
         killStreak.remove(player.getUniqueId());
         combatTag.remove(player.getUniqueId());
+        spawnProtection.remove(player.getUniqueId());
     }
 
     /**
@@ -258,13 +265,17 @@ public class PvPManager {
             return;
         }
 
+        // Remover proteção de spawn ao entrar em combate
+        if (hasSpawnProtection(player)) {
+            removeSpawnProtection(player);
+        }
+
         // Se o jogador já está em combate, não enviar a mensagem novamente
         boolean alreadyInCombat = isInCombat(player);
 
         combatTag.put(player.getUniqueId(), System.currentTimeMillis());
 
         if (!alreadyInCombat) {
-            // Enviar mensagem apenas na primeira vez até o tag expirar
             plugin.getLanguageManager().sendMessage(player, "pvp.combat-start");
         }
     }
@@ -332,7 +343,6 @@ public class PvPManager {
 
     /**
      * Atualiza a visibilidade de TODOS os jogadores
-     * Útil ao recarregar o plugin ou ao iniciar
      */
     public void updateAllPlayersVisibility() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -344,7 +354,6 @@ public class PvPManager {
      * Recarrega as configurações
      */
     public void reload() {
-        // Desativar PvP de todos os jogadores
         for (UUID uuid : new HashSet<>(pvpPlayers)) {
             Player player = plugin.getServer().getPlayer(uuid);
             if (player != null && player.isOnline()) {
@@ -354,13 +363,63 @@ public class PvPManager {
 
         pvpPlayers.clear();
         killStreak.clear();
+        spawnProtection.clear();
     }
 
+    /**
+     * Força a desativação do PvP (usado em mortes)
+     */
     public void forceDisablePvP(Player player) {
         pvpPlayers.remove(player.getUniqueId());
         killStreak.remove(player.getUniqueId());
         combatTag.remove(player.getUniqueId());
+        spawnProtection.remove(player.getUniqueId());
         updatePlayerVisibility(player);
     }
 
+    // ==================== SPAWN PROTECTION ====================
+
+    /**
+     * Verifica se o jogador tem proteção de spawn
+     */
+    public boolean hasSpawnProtection(Player player) {
+        if (!spawnProtection.containsKey(player.getUniqueId())) {
+            return false;
+        }
+
+        long protectionStart = spawnProtection.get(player.getUniqueId());
+        long currentTime = System.currentTimeMillis();
+
+        // Se passou mais de 3 segundos, remover proteção
+        if ((currentTime - protectionStart) >= SPAWN_PROTECTION_TIME) {
+            spawnProtection.remove(player.getUniqueId());
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Remove a proteção de spawn de um jogador
+     */
+    public void removeSpawnProtection(Player player) {
+        if (spawnProtection.remove(player.getUniqueId()) != null) {
+            plugin.getLanguageManager().sendMessage(player, "pvp.spawn-protection-removed");
+        }
+    }
+
+    /**
+     * Obtém o tempo restante de proteção em milissegundos
+     */
+    public long getRemainingProtectionTime(Player player) {
+        if (!spawnProtection.containsKey(player.getUniqueId())) {
+            return 0;
+        }
+
+        long protectionStart = spawnProtection.get(player.getUniqueId());
+        long currentTime = System.currentTimeMillis();
+        long elapsed = currentTime - protectionStart;
+
+        return Math.max(0, SPAWN_PROTECTION_TIME - elapsed);
+    }
 }

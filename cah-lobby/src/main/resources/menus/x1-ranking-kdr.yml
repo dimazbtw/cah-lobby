@@ -1,0 +1,265 @@
+# Menu de Ranking X1 - KDR
+menu:
+  pt_PT:
+    title: "&5&lRANKING X1 &8(KDR)"
+    size: 54
+    update-interval: 40
+
+    items:
+      toggle-kdr:
+        slot: 4
+        material: "GOLDEN_APPLE"
+        name: "&e&lALTERNAR RANKING"
+        lore:
+          - ""
+          - "&7Clique para alternar entre:"
+          - "&7► Vitórias"
+          - "&a► KDR"
+          - ""
+        actions:
+          - "[MENU] x1-ranking"
+
+      top1:
+        slot: 13
+        material: "SKULL_ITEM:3:{top_x1_1_name}"
+        name: "&6&l#1 &f{top_x1_1_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_1_kdr}"
+          - "&7Vitórias: &a{top_x1_1_wins}"
+          - "&7Derrotas: &c{top_x1_1_losses}"
+          - ""
+        actions: []
+
+      top2:
+        slot: 21
+        material: "SKULL_ITEM:3:{top_x1_2_name}"
+        name: "&7&l#2 &f{top_x1_2_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_2_kdr}"
+          - "&7Vitórias: &a{top_x1_2_wins}"
+          - "&7Derrotas: &c{top_x1_2_losses}"
+          - ""
+        actions: []
+
+      top3:
+        slot: 23
+        material: "SKULL_ITEM:3:{top_x1_3_name}"
+        name: "&c&l#3 &f{top_x1_3_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_3_kdr}"
+          - "&7Vitórias: &a{top_x1_3_wins}"
+          - "&7Derrotas: &c{top_x1_3_losses}"
+          - ""
+        actions: []
+
+      top4:
+        slot: 29
+        material: "PAPER"
+        name: "&e#4 &f{top_x1_4_name}"
+        lore:
+          - "&7KDR: &e{top_x1_4_kdr} &8| &7Vitórias: &a{top_x1_4_wins}"
+        actions: []
+
+      top5:
+        slot: 30
+        material: "PAPER"
+        name: "&e#5 &f{top_x1_5_name}"
+        lore:
+          - "&7KDR: &e{top_x1_5_kdr} &8| &7Vitórias: &a{top_x1_5_wins}"
+        actions: []
+
+      top6:
+        slot: 31
+        material: "PAPER"
+        name: "&e#6 &f{top_x1_6_name}"
+        lore:
+          - "&7KDR: &e{top_x1_6_kdr} &8| &7Vitórias: &a{top_x1_6_wins}"
+        actions: []
+
+      top7:
+        slot: 32
+        material: "PAPER"
+        name: "&e#7 &f{top_x1_7_name}"
+        lore:
+          - "&7KDR: &e{top_x1_7_kdr} &8| &7Vitórias: &a{top_x1_7_wins}"
+        actions: []
+
+      top8:
+        slot: 33
+        material: "PAPER"
+        name: "&e#8 &f{top_x1_8_name}"
+        lore:
+          - "&7KDR: &e{top_x1_8_kdr} &8| &7Vitórias: &a{top_x1_8_wins}"
+        actions: []
+
+      top9:
+        slot: 38
+        material: "PAPER"
+        name: "&e#9 &f{top_x1_9_name}"
+        lore:
+          - "&7KDR: &e{top_x1_9_kdr} &8| &7Vitórias: &a{top_x1_9_wins}"
+        actions: []
+
+      top10:
+        slot: 42
+        material: "PAPER"
+        name: "&e#10 &f{top_x1_10_name}"
+        lore:
+          - "&7KDR: &e{top_x1_10_kdr} &8| &7Vitórias: &a{top_x1_10_wins}"
+        actions: []
+
+      your-stats:
+        slot: 49
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lSUAS ESTATÍSTICAS"
+        lore:
+          - ""
+          - "&7Suas vitórias: &a%pvpstats_x1_wins%"
+          - "&7Suas derrotas: &c%pvpstats_x1_losses%"
+          - "&7Seu KDR: &e%pvpstats_x1_kdr%"
+          - ""
+        actions: []
+
+      close:
+        slot: 53
+        material: "BARRIER"
+        name: "&c&lFECHAR"
+        lore:
+          - "&7Clique para fechar"
+        actions:
+          - "[CLOSE]"
+
+  en_US:
+    title: "&5&lX1 RANKING &8(KDR)"
+    size: 54
+    update-interval: 40
+
+    items:
+      toggle-kdr:
+        slot: 4
+        material: "GOLDEN_APPLE"
+        name: "&e&lTOGGLE RANKING"
+        lore:
+          - ""
+          - "&7Click to toggle between:"
+          - "&7► Wins"
+          - "&a► KDR"
+          - ""
+        actions:
+          - "[MENU] x1-ranking"
+
+      top1:
+        slot: 13
+        material: "SKULL_ITEM:3:{top_x1_1_name}"
+        name: "&6&l#1 &f{top_x1_1_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_1_kdr}"
+          - "&7Wins: &a{top_x1_1_wins}"
+          - "&7Losses: &c{top_x1_1_losses}"
+          - ""
+        actions: []
+
+      top2:
+        slot: 21
+        material: "SKULL_ITEM:3:{top_x1_2_name}"
+        name: "&7&l#2 &f{top_x1_2_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_2_kdr}"
+          - "&7Wins: &a{top_x1_2_wins}"
+          - "&7Losses: &c{top_x1_2_losses}"
+          - ""
+        actions: []
+
+      top3:
+        slot: 23
+        material: "SKULL_ITEM:3:{top_x1_3_name}"
+        name: "&c&l#3 &f{top_x1_3_name}"
+        lore:
+          - ""
+          - "&7KDR: &e{top_x1_3_kdr}"
+          - "&7Wins: &a{top_x1_3_wins}"
+          - "&7Losses: &c{top_x1_3_losses}"
+          - ""
+        actions: []
+
+      top4:
+        slot: 29
+        material: "PAPER"
+        name: "&e#4 &f{top_x1_4_name}"
+        lore:
+          - "&7KDR: &e{top_x1_4_kdr} &8| &7Wins: &a{top_x1_4_wins}"
+        actions: []
+
+      top5:
+        slot: 30
+        material: "PAPER"
+        name: "&e#5 &f{top_x1_5_name}"
+        lore:
+          - "&7KDR: &e{top_x1_5_kdr} &8| &7Wins: &a{top_x1_5_wins}"
+        actions: []
+
+      top6:
+        slot: 31
+        material: "PAPER"
+        name: "&e#6 &f{top_x1_6_name}"
+        lore:
+          - "&7KDR: &e{top_x1_6_kdr} &8| &7Wins: &a{top_x1_6_wins}"
+        actions: []
+
+      top7:
+        slot: 32
+        material: "PAPER"
+        name: "&e#7 &f{top_x1_7_name}"
+        lore:
+          - "&7KDR: &e{top_x1_7_kdr} &8| &7Wins: &a{top_x1_7_wins}"
+        actions: []
+
+      top8:
+        slot: 33
+        material: "PAPER"
+        name: "&e#8 &f{top_x1_8_name}"
+        lore:
+          - "&7KDR: &e{top_x1_8_kdr} &8| &7Wins: &a{top_x1_8_wins}"
+        actions: []
+
+      top9:
+        slot: 38
+        material: "PAPER"
+        name: "&e#9 &f{top_x1_9_name}"
+        lore:
+          - "&7KDR: &e{top_x1_9_kdr} &8| &7Wins: &a{top_x1_9_wins}"
+        actions: []
+
+      top10:
+        slot: 42
+        material: "PAPER"
+        name: "&e#10 &f{top_x1_10_name}"
+        lore:
+          - "&7KDR: &e{top_x1_10_kdr} &8| &7Wins: &a{top_x1_10_wins}"
+        actions: []
+
+      your-stats:
+        slot: 49
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lYOUR STATS"
+        lore:
+          - ""
+          - "&7Your wins: &a%pvpstats_x1_wins%"
+          - "&7Your losses: &c%pvpstats_x1_losses%"
+          - "&7Your KDR: &e%pvpstats_x1_kdr%"
+          - ""
+        actions: []
+
+      close:
+        slot: 53
+        material: "BARRIER"
+        name: "&c&lCLOSE"
+        lore:
+          - "&7Click to close"
+        actions:
+          - "[CLOSE]"

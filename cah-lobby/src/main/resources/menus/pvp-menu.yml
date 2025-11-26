@@ -1,0 +1,213 @@
+# Menu Principal de PvP
+menu:
+  pt_PT:
+    title: "&c&lMODOS DE PVP"
+    size: 45
+    update-interval: 0
+
+    items:
+      # Arena FFA
+      arena:
+        slot: 11
+        material: "IRON_SWORD"
+        name: "&c&lARENA FFA"
+        lore:
+          - ""
+          - "&7Entre na arena e lute"
+          - "&7contra todos os jogadores!"
+          - ""
+          - "&7Modo: &eTodos contra todos"
+          - "&7Respawn: &aInstantâneo"
+          - ""
+          - "&eClique para entrar!"
+        actions:
+          - "[CLOSE]"
+          - "[PLAYER] arena"
+
+      # Desafiar X1
+      x1-challenge:
+        slot: 13
+        material: "DIAMOND_SWORD"
+        name: "&5&lDESAFIAR X1"
+        lore:
+          - ""
+          - "&7Desafie um jogador para"
+          - "&7um duelo 1v1!"
+          - ""
+          - "&7Use: &e/x1 <jogador>"
+          - ""
+          - "&eClique para ver comandos!"
+        actions:
+          - "[CLOSE]"
+          - "[MESSAGE] &5&l[X1] &7Comandos disponíveis:"
+          - "[MESSAGE] &e/x1 <jogador> &7- Desafiar jogador"
+          - "[MESSAGE] &e/x1 aceitar &7- Aceitar convite"
+          - "[MESSAGE] &e/x1 recusar &7- Recusar convite"
+
+      # Fila X1
+      x1-queue:
+        slot: 15
+        material: "WATCH"
+        name: "&e&lFILA X1"
+        lore:
+          - ""
+          - "&7Entre na fila e aguarde"
+          - "&7um oponente aleatório!"
+          - ""
+          - "&7Modo: &e1v1 Aleatório"
+          - ""
+          - "&eClique para entrar na fila!"
+        actions:
+          - "[CLOSE]"
+          - "[PLAYER] x1 fila"
+
+      # Ranking
+      ranking:
+        slot: 30
+        material: "BOOK"
+        name: "&6&lRANKINGS"
+        lore:
+          - ""
+          - "&7Veja os melhores jogadores"
+          - "&7de PvP do servidor!"
+          - ""
+          - "&a► &fRanking Arena"
+          - "&5► &fRanking X1"
+          - ""
+          - "&eClique para ver!"
+        actions:
+          - "[MENU] ranking-selector"
+
+      # Perfil/Estatísticas
+      profile:
+        slot: 32
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lMEU PERFIL"
+        lore:
+          - ""
+          - "&7Suas estatísticas de PvP:"
+          - ""
+          - "&c&lARENA:"
+          - "&7Abates: &a%pvpstats_kills%"
+          - "&7Mortes: &c%pvpstats_deaths%"
+          - "&7KDR: &e%pvpstats_kdr%"
+          - ""
+          - "&5&lX1:"
+          - "&7Vitórias: &a%pvpstats_x1_wins%"
+          - "&7Derrotas: &c%pvpstats_x1_losses%"
+          - "&7Win Rate: &e%pvpstats_x1_winrate%"
+          - ""
+        actions: []
+
+      # Voltar/Fechar
+      close:
+        slot: 40
+        material: "ARROW"
+        name: "&c&lVOLTAR"
+        lore:
+          - "&7Clique para fechar"
+        actions:
+          - "[CLOSE]"
+
+  en_US:
+    title: "&c&lPVP MODES"
+    size: 45
+    update-interval: 0
+
+    items:
+      arena:
+        slot: 11
+        material: "IRON_SWORD"
+        name: "&c&lFFA ARENA"
+        lore:
+          - ""
+          - "&7Enter the arena and fight"
+          - "&7against all players!"
+          - ""
+          - "&7Mode: &eFree for all"
+          - "&7Respawn: &aInstant"
+          - ""
+          - "&eClick to enter!"
+        actions:
+          - "[CLOSE]"
+          - "[PLAYER] arena"
+
+      x1-challenge:
+        slot: 13
+        material: "DIAMOND_SWORD"
+        name: "&5&lCHALLENGE X1"
+        lore:
+          - ""
+          - "&7Challenge a player to"
+          - "&7a 1v1 duel!"
+          - ""
+          - "&7Use: &e/x1 <player>"
+          - ""
+          - "&eClick to see commands!"
+        actions:
+          - "[CLOSE]"
+          - "[MESSAGE] &5&l[X1] &7Available commands:"
+          - "[MESSAGE] &e/x1 <player> &7- Challenge player"
+          - "[MESSAGE] &e/x1 accept &7- Accept invite"
+          - "[MESSAGE] &e/x1 deny &7- Deny invite"
+
+      x1-queue:
+        slot: 15
+        material: "WATCH"
+        name: "&e&lX1 QUEUE"
+        lore:
+          - ""
+          - "&7Join the queue and wait"
+          - "&7for a random opponent!"
+          - ""
+          - "&7Mode: &eRandom 1v1"
+          - ""
+          - "&eClick to join queue!"
+        actions:
+          - "[CLOSE]"
+          - "[PLAYER] x1 fila"
+
+      ranking:
+        slot: 30
+        material: "BOOK"
+        name: "&6&lRANKINGS"
+        lore:
+          - ""
+          - "&7See the best PvP"
+          - "&7players on the server!"
+          - ""
+          - "&a► &fArena Ranking"
+          - "&5► &fX1 Ranking"
+          - ""
+          - "&eClick to view!"
+        actions:
+          - "[MENU] ranking-selector"
+
+      profile:
+        slot: 32
+        material: "SKULL_ITEM:3:{player}"
+        name: "&a&lMY PROFILE"
+        lore:
+          - ""
+          - "&7Your PvP statistics:"
+          - ""
+          - "&c&lARENA:"
+          - "&7Kills: &a%pvpstats_kills%"
+          - "&7Deaths: &c%pvpstats_deaths%"
+          - "&7KDR: &e%pvpstats_kdr%"
+          - ""
+          - "&5&lX1:"
+          - "&7Wins: &a%pvpstats_x1_wins%"
+          - "&7Losses: &c%pvpstats_x1_losses%"
+          - "&7Win Rate: &e%pvpstats_x1_winrate%"
+          - ""
+        actions: []
+
+      close:
+        slot: 40
+        material: "ARROW"
+        name: "&c&lBACK"
+        lore:
+          - "&7Click to close"
+        actions:
+          - "[CLOSE]"

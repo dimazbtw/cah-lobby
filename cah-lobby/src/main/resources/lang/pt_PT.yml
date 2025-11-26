@@ -214,16 +214,152 @@ hologram:
   teleported: "&aVocê foi teleportado para o holograma &f{name}&a!"
   moved: "&aHolograma &f{name}&a movido para sua localização!"
 
+stats:
+  header: "&6&m------------------------------"
+  title: "&6Estatísticas de &f{player}"
+  kills: "&eKills: &f{kills}"
+  deaths: "&eMortes: &f{deaths}"
+  kdr: "&eKDR: &f{kdr}"
+  highest-streak: "&eMaior Streak: &f{streak}"
+  kills-rank: "&eRanking (Kills): &f#{kills_position}"
+  kdr-rank: "&eRanking (KDR): &f#{kdr_position}"
+  footer: "&6&m------------------------------"
+
+# Sistema de Ranking
+ranking:
+  invalid-type: "&cTipo inválido! Use: &fkills&c, &fkdr&c ou &fstreak"
+  empty: "&cAinda não há dados de ranking!"
+  footer: "&6&m------------------------------"
+
+  # Ranking de Kills
+  kills-header: "&6&m------------------------------\n&6&lTOP 10 - KILLS\n&6&m------------------------------"
+  kills-line: "{position} &f{player} &7- &e{kills} kills &7(KDR: &f{kdr}&7)"
+
+  # Ranking de KDR
+  kdr-header: "&6&m------------------------------\n&6&lTOP 10 - KDR\n&6&m------------------------------"
+  kdr-line: "{position} &f{player} &7- &eKDR: {kdr} &7({kills}/{deaths})"
+
+  # Ranking de Streak
+  streak-header: "&6&m------------------------------\n&6&lTOP 10 - KILLSTREAK\n&6&m------------------------------"
+  streak-line: "{position} &f{player} &7- &e{streak} streak &7({kills} kills)"
+
+preferences:
+  enabled: "&aAtivado"
+  disabled: "&cDesativado"
+  status-enabled: "&aEstado: &fAtivado ✔"
+  status-disabled: "&cEstado: &fDesativado ✖"
+
+  chat-toggled: "&aChat {state}&a!"
+  pm-toggled: "&aMensagens privadas {state}&a!"
+  fly-toggled: "&aModo de voo {state}&a!"
+
+  chat-self-disabled: "&cVocê desativou o chat nas suas preferências!"
+  pm-self-disabled: "&cVocê desativou mensagens privadas nas suas preferências!"
+
+tell:
+  usage: "&cUso: /tell <jogador> <mensagem>"
+  reply-usage: "&cUso: /reply <mensagem>"
+  target-not-found: "&cJogador &f{player}&c não encontrado ou offline!"
+  target-offline: "&cO jogador está offline!"
+  target-disabled: "&f{player}&c desativou mensagens privadas!"
+  self-disabled: "&cVocê desativou mensagens privadas nas suas preferências!"
+  self-message: "&cVocê não pode enviar mensagem para si mesmo!"
+  no-previous: "&cVocê não tem nenhuma conversa recente!"
+
+# ==================== ARENA ====================
+arena:
+  joined: "&a&lARENA! &7Você entrou na arena FFA. Boa sorte!"
+  no-spawn: "&cO spawn da arena ainda não foi definido!"
+  spawn-set: "&aSpawn da arena definido em &fx: {x} y: {y} z: {z}"
+
+# ==================== X1 ====================
+x1:
+  help:
+    header: "&6&m------------------------------"
+    footer: "&6&m------------------------------"
+
+  # Convites
+  invite-sent: "&aConvite de X1 enviado para &f{player}&a!"
+  invite-received: "&e&l[X1] &f{player} &ete convidou para um X1!"
+  already-invited: "&cVocê já convidou este jogador!"
+  no-invite: "&cVocê não tem convites de X1 pendentes!"
+  inviter-offline: "&cO jogador que te convidou saiu do servidor!"
+  invite-denied: "&cVocê recusou o convite de X1."
+  invite-denied-other: "&c{player} recusou seu convite de X1."
+  invite-expired: "&cO convite de X1 expirou!"
+  invite-expired-sender: "&cSeu convite de X1 expirou!"
+
+  # Fila
+  joined-queue: "&a&lFILA X1! &7Você entrou na fila. Posição: &e#{position}"
+  left-queue: "&cVocê saiu da fila de X1."
+  already-in-queue: "&cVocê já está na fila!"
+
+  # Validações
+  self-invite: "&cVocê não pode se convidar!"
+  target-in-match: "&cEste jogador já está em uma partida!"
+  target-in-pvp: "&cEste jogador está no modo PvP!"
+  already-in-match: "&cVocê já está em uma partida!"
+  not-in-match: "&cVocê não está em uma partida de X1!"
+  in-pvp: "&cVocê está no modo PvP! Saia primeiro com /sair"
+  no-positions: "&cAs posições do X1 ainda não foram definidas!"
+  invalid-position: "&cPosição inválida! Use: pos1 ou pos2"
+  position-set: "&aPosição &f{position} &adefinida em &fx: {x} y: {y} z: {z}"
+
+  # Partida
+  match-started: "&5&l[X1] &fPartida iniciada contra &e{opponent}&f!"
+  you-won: "&a&lVITÓRIA! &7Você venceu o X1 contra &c{loser}&7!"
+  you-lost: "&c&lDERROTA! &7Você perdeu o X1 para &a{winner}&7!"
+  match-result: "&5&l[X1] &a{winner} &7venceu o X1 contra &c{loser}&7!"
+
+# ==================== PVP (adicional) ====================
 pvp:
   enabled: "&a&lPvP Ativado! &7Você agora pode lutar contra outros jogadores."
   disabled: "&c&lPvP Desativado! &7Seu streak foi de &e{streak} &7kills."
   already-enabled: "&c&lPvP já está ativado!"
-
   kill: "&a&l+1 Kill! &7Você matou &c{victim}&7. Streak: &e{streak}"
   death: "&c&lVocê morreu! &7Assassinado por &c{killer}&7. Seu streak era &e{streak}"
   death-broadcast: "&c☠ &f{victim} &7foi morto por &c{killer} &7[Streak: &e{streak}&7]"
-
+  death-environment: "&c☠ &f{victim} &7morreu no ambiente"
   target-not-in-pvp: "&cEsse jogador não está no modo PvP!"
-
   respawn: "&aVocê respawnou com um novo kit!"
   apple-received: "&6+1 Maçã Dourada! &7Continue eliminando!"
+  combat-tag: "&c&lEM COMBATE! &7Aguarde &e{time}s &7para sair."
+  combat-start: "&c&lCOMBATE! &7Você está em combate. Não desconecte!"
+  combat-end: "&a&lCombate encerrado! &7Você pode sair agora."
+  spawn-protection: "&a&lPROTEÇÃO! &7Você tem &e3 segundos &7de proteção."
+  spawn-protection-removed: "&c&lProteção removida! &7Você pode ser atacado agora."
+  target-protected: "&c{player} está protegido! &7Aguarde &e{time}s&7."
+
+parkour:
+  started: "&a&lPARKOUR INICIADO! &7Boa sorte! Checkpoints: &e{checkpoints}"
+  checkpoint: "&a&lCHECKPOINT! &7Checkpoint &e#{checkpoint} &7salvo."
+  finished: "&a&lPARKOUR CONCLUÍDO! &7Tempo: &e{time}"
+  finished-record: "&6&l★ NOVO RECORDE PESSOAL! &7Tempo: &e{time}"
+  top-record: "&6&l★ VOCÊ ENTROU NO TOP 10! &7Parabéns!"
+  cancelled: "&c&lPARKOUR CANCELADO! &7Você saiu do parkour."
+  restarted: "&e&lPARKOUR REINICIADO! &7Começando do início..."
+  teleported-checkpoint: "&a&lTELEPORTADO! &7Você voltou ao último checkpoint."
+  no-checkpoint: "&c&lSEM CHECKPOINT! &7Você ainda não passou por nenhum checkpoint."
+
+  items:
+    checkpoint:
+      name: "&a&lÚltimo Checkpoint"
+      lore:
+        - ""
+        - "&7Clique para voltar ao"
+        - "&7último checkpoint salvo!"
+        - ""
+    restart:
+      name: "&e&lReiniciar"
+      lore:
+        - ""
+        - "&7Clique para reiniciar"
+        - "&7o parkour do início!"
+        - ""
+    cancel:
+      name: "&c&lCancelar"
+      lore:
+        - ""
+        - "&7Clique para sair"
+        - "&7do parkour!"
+        - ""

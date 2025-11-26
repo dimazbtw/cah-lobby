@@ -13,12 +13,13 @@ public class CommandRegistry {
 
         frame.registerCommands(
                 new UtilityCommands(plugin.getLanguageManager()),
-                new LobbyCommand(plugin),
+                plugin.getLobbyCommand(),
                 new HologramCommands(plugin),
                 new NPCCommands(plugin),
                 new StatsCommand(plugin),
                 new PreferencesCommands(plugin),
-                new TellCommands(plugin)
+                new TellCommands(plugin),
+                plugin.getCombatCommands()
         );
 
         messageHolder.setMessage(MessageType.ERROR, "§cOcorreu um erro durante a execução deste comando.");

@@ -179,6 +179,9 @@ public class LobbyCommand {
             return;
         }
 
+        Location spawn = getSpawn();
+        player.teleport(spawn);
+
         // Desativar PvP normalmente se não estiver em combate
         pvpManager.disablePvP(player);
     }
